@@ -1,3 +1,4 @@
+import "./JoinChatContainer.css"
 export default function JoinChatContainer(){
     return (
         <div>
