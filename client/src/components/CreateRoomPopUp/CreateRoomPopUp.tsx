@@ -1,3 +1,5 @@
+import "./CreateRoomPopUp.css"
+
 export default function CreateRoomPopUp (){
     return(
         <div>

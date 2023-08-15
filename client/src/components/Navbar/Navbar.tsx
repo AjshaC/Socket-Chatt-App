@@ -1,3 +1,4 @@
+import "./Navbar.css"
 import OpenPopUpBtn from "../OpenPopUpBtn/OpenPopUpBtn"
 
 export default function Navbar(){

@@ -1,3 +1,5 @@
+import "./WriteAndSendContainer.css"
+
 export default function WriteAndSendContainer(){
     return (
         <div>
