@@ -1,4 +1,6 @@
 import "./Navbar.css"
+import { Button} from 'antd';
+
 import OpenPopUpBtn from "../OpenPopUpBtn/OpenPopUpBtn"
 
 export default function Navbar(){
@@ -6,7 +8,7 @@ export default function Navbar(){
         <nav>
          <h1>LOGO</h1>
          <OpenPopUpBtn/>
-         <button></button>
+         <Button>X</Button>
         </nav>
        
 

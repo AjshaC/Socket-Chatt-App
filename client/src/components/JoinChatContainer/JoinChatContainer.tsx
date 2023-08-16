@@ -1,12 +1,19 @@
 import "./JoinChatContainer.css";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom" ;
+import { Button} from 'antd';
 
-//-----------------------------Room-Context----------------------------------//
+
 import { io } from 'socket.io-client';
 
 
 export default function JoinChatContainer(){
+
+    
+
+     
+    const socket = io('http://localhost:3000',  {autoConnect : false});
+     
 
     const [username, setUsername] = useState("");
 
@@ -17,9 +24,11 @@ export default function JoinChatContainer(){
             console.log("no Username")
         }
         else{
-            const socket = io('http://localhost:3000');
+
+               socket.connect();
+            
             socket.emit('join', 'lobby')
-            console.log("no Username")
+            console.log(username)
             navigate("/chat");
         }
         
@@ -28,7 +37,7 @@ export default function JoinChatContainer(){
     return (
         <div>
             <input onChange={(e)=> setUsername(e.target.value)} type="text" placeholder="UserName"/>
-            <button onClick={joinChatClick}>Join</button>
+            <Button type="primary" onClick={joinChatClick}>Join</Button>
         </div>
     )
 }

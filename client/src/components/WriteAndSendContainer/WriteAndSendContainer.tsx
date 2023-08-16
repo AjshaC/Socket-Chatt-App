@@ -1,10 +1,12 @@
 import "./WriteAndSendContainer.css"
+import { Button , Input} from 'antd';
 
 export default function WriteAndSendContainer(){
     return (
         <div>
-            <input type="text" placeholder="Write your message" />
-            <button>Send</button>
+            <Input type="text" placeholder="Write your message" />
+            <Button type="primary" >Send</Button>
         </div>
     )
 }
+
