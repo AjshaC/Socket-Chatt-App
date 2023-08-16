@@ -1,7 +1,7 @@
 import "./JoinChatContainer.css";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom" ;
-import { Button} from 'antd';
+import { Button, Input} from 'antd';
 
 
 import { io } from 'socket.io-client';
@@ -35,9 +35,9 @@ export default function JoinChatContainer(){
     }
 
     return (
-        <div>
-            <input onChange={(e)=> setUsername(e.target.value)} type="text" placeholder="UserName"/>
-            <Button type="primary" onClick={joinChatClick}>Join</Button>
+        <div className="JoinChatContainer">
+            <Input onChange={(e)=> setUsername(e.target.value)} type="text" placeholder="UserName"/>
+            <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join</Button>
         </div>
     )
 }
