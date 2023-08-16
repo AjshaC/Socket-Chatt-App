@@ -35,9 +35,12 @@ export default function JoinChatContainer(){
     }
 
     return (
+   
         <div className="JoinChatContainer">
-            <Input onChange={(e)=> setUsername(e.target.value)} type="text" placeholder="UserName"/>
-            <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join</Button>
+            <Input className="UserNameInput" onChange={(e)=> setUsername(e.target.value)} type="text" placeholder="Enter username..."/>
+            <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join A Chat</Button>
         </div>
+    
+    
     )
 }
