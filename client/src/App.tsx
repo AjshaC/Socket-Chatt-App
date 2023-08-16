@@ -1,8 +1,8 @@
 
 import { io } from "socket.io-client";
 
-import ChatPage from "./pages/ChatPage";
-import Home from "./pages/Home";
+import ChatPage from "./pages/chatPage";
+import Home from "./pages/home";
 import { Routes, Route } from "react-router-dom";
 
 
