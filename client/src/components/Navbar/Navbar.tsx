@@ -7,8 +7,11 @@ export default function Navbar(){
     return(
         <nav>
          <h1>LOGO</h1>
-         <OpenPopUpBtn/>
-         <Button>X</Button>
+         <div className="NavBtn">
+           <OpenPopUpBtn/>
+           <Button>X</Button>
+         </div>
+     
         </nav>
        
 
