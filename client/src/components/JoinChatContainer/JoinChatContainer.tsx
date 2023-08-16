@@ -9,12 +9,8 @@ import { io } from 'socket.io-client';
 
 export default function JoinChatContainer(){
 
-    
-
-     
     const socket = io('http://localhost:3000',  {autoConnect : false});
      
-
     const [username, setUsername] = useState("");
 
     const navigate = useNavigate();
@@ -25,8 +21,7 @@ export default function JoinChatContainer(){
         }
         else{
 
-               socket.connect();
-            
+            socket.connect();
             socket.emit('join', 'lobby')
             console.log(username)
             navigate("/chat");
@@ -40,7 +35,6 @@ export default function JoinChatContainer(){
             <Input className="UserNameInput" onChange={(e)=> setUsername(e.target.value)} type="text" placeholder="Enter username..."/>
             <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join A Chat</Button>
         </div>
-    
-    
+
     )
 }
