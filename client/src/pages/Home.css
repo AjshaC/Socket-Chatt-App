@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lumanosimo&family=Sacramento&display=swap');
+
 .HomeWrapper{
     display: flex;
     flex-direction: column;
@@ -6,6 +8,18 @@
     min-height: 100vh;
     background: url(../assets/background.jpg);
     background-size: cover;
+}
+
+.logo {
+    font-family: 'Sacramento', cursive;
+    font-size: 4rem;
+    color: aliceblue;
+    text-shadow: 1px 1px 2px midnightblue;
+}
+
+.logo-part-two {
+    font-family: 'Lumanosimo', cursive;
+    text-transform: uppercase;
 }
 
 

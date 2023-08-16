@@ -3,7 +3,7 @@ import "./Home.css"
 export default function Home(){
     return(
         <div className="HomeWrapper">
-            <h1>eleven <span className="logo-part-two">chatt</span></h1>
+            <h1 className="logo"><span className="logo-part-two">chat</span> at eleven</h1>
             <JoinChatContainer/>
         </div>
     )
