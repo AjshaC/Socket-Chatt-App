@@ -1,31 +1,34 @@
 import "./JoinChatContainer.css";
-import {useState} from "react";
 
 import {useNavigate} from "react-router-dom" ;
+import { Button, Input} from 'antd';
+import { useChatContext} from "../../context/chatContext";
+
 
 
 
 
 export default function JoinChatContainer(){
-
-    const [username, setUsername] = useState("");
+    const {user, setUser, connectToTheServer} = useChatContext();
 
     const navigate = useNavigate();
 
     const joinChatClick = () => {
-        if(!username){
-            console.log("no Username")
-        }
-        else{
+        if(user.trim() !== ""){
+            connectToTheServer(user)
             navigate("/chat");
+        }
+                   
+        else{
+             console.log("no Username", user)
         }
         
     }
 
     return (
-        <div>
-            <input onChange={(e)=> setUsername(e.target.value)} type="text" placeholder="UserName"/>
-            <button onClick={joinChatClick}>Join</button>
+        <div className="JoinChatContainer">
+            <Input onChange={(e)=> setUser(e.target.value)} type="text" placeholder="UserName"/>
+            <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join</Button>
         </div>
     )
 }

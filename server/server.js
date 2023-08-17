@@ -16,6 +16,23 @@ const io = new Server(server, {
 
   io.on("connection", (socket)=>{
     console.log(socket.id);
+//add room
+
+      socket.on('join', ( user,room)=> {
+
+      socket.join(user,room);
+
+      console.log(`User ${socket.id} with ${user},  joined room ${room}`);
+
+      //
+      
+      socket.broadcast.emit('userJoined', ` ${user} `);
+      //  socket.broadcast.emit
+
+    })
+
+//add room
+
   })
 
   server.listen(3000, () => console.log("server is up"));
