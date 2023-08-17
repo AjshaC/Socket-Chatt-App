@@ -1,15 +1,11 @@
 import "./JoinChatContainer.css";
-
 import {useNavigate} from "react-router-dom" ;
 import { Button, Input} from 'antd';
 import { useChatContext} from "../../context/chatContext";
 
-
-
-
-
 export default function JoinChatContainer(){
     const {user, setUser, connectToTheServer} = useChatContext();
+
 
     const navigate = useNavigate();
 
@@ -20,15 +16,19 @@ export default function JoinChatContainer(){
         }
                    
         else{
+
              console.log("no Username", user)
+
         }
         
     }
 
     return (
+   
         <div className="JoinChatContainer">
-            <Input onChange={(e)=> setUser(e.target.value)} type="text" placeholder="UserName"/>
-            <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join</Button>
+
+            <Input className="UserNameInput" onChange={(e)=> setUser(e.target.value)} type="text" placeholder="Enter username..."/>
+            <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join A Chat</Button>
         </div>
     )
 }

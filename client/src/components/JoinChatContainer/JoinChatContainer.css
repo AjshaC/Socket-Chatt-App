@@ -1,14 +1,25 @@
-.JoinChatContainer{
-    border: 1px solid red;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 50vh;
-    gap:8px;
-    width: 50%;
-    padding: 0px 50px 0px 50px;
-
+.JoinChatContainer {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   min-height: 50vh;
+   gap:8px;
+   width: 50%;
+   padding: 0px 50px 0px 50px;
+   border: 3px solid aliceblue;
+   border-radius: 16px;
+   background: rgba(211, 229, 245, 0.7);
 }
+
+.UserNameInput {
+   border-radius: 5px;
+}
+
+.JoinBtn{
+   background-color: midnightblue;
+   border-radius: 5px;
+}
+
 
 
 @media (max-width: 768px) {
