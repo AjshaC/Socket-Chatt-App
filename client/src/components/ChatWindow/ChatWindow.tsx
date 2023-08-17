@@ -3,6 +3,7 @@ import  { useState, useEffect } from 'react';
 import { Alert } from 'antd';
 import { useChatContext } from "../../context/chatContext";
 import { Button , Input} from 'antd';
+import { SendOutlined } from "@ant-design/icons";
 
 
 export default function ChatWindow(){
@@ -52,6 +53,7 @@ export default function ChatWindow(){
     return ( 
        
         <div className="ChatWindow">
+            
             <div className="UserJoined">
             {showAlert && (
                     <Alert
@@ -61,7 +63,6 @@ export default function ChatWindow(){
                         closable
                     />
                 )}
-                
             </div>
             
             <div className="MessageContainer">
@@ -78,16 +79,18 @@ export default function ChatWindow(){
                         </div>
                     )
                 })}
+
+                <Alert className="message2" message="Success Text" type="success" />
             </div>
 
-            <Alert className="message2" message="Success Text" type="success" />
-
-            <div className="chat-footer">
+            <div className="ChatFooter">
                 <Input onChange={(e)=> setCurrentMessage(e.target.value)} type="text" placeholder="Write your message..." />
-                <Button onClick={sendMessage} type="primary">Send</Button>
+                <Button onClick={sendMessage} type="primary"><SendOutlined /></Button>
             </div>
 
         </div>
+
+        
     )
 }
 
