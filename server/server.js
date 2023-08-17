@@ -26,7 +26,8 @@ const io = new Server(server, {
 
       //
       
-       io.emit('userJoined', `User ${user} `);
+      socket.broadcast.emit('userJoined', `User ${user} `);
+      //  socket.broadcast.emit
 
     })
 
