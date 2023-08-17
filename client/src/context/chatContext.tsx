@@ -1,6 +1,6 @@
 
 import { createContext, useContext, useState, PropsWithChildren, useEffect } from "react";
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 
 // export interface User {
@@ -10,19 +10,25 @@ import { io } from 'socket.io-client';
 
 
 interface IChatContext {
+  socket: Socket,
   user: string;
   userJoined:string;
   setUser: React.Dispatch<React.SetStateAction<string>>;
   connectToTheServer: (user:string) => void; 
+  message: string;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-
+const socket = io('http://localhost:3000',  {autoConnect : false});
 
 export const ChatContext = createContext<IChatContext>({
+  socket,
   user:"",
   userJoined:"",
   setUser: () => {},
   connectToTheServer: (user:string) => {},
+  message:"",
+  setMessage: () => {}
 });
 
 export const useChatContext= () => useContext(ChatContext);
@@ -30,7 +36,7 @@ export const useChatContext= () => useContext(ChatContext);
 export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [user, setUser] = useState("");
   const [userJoined, setUserJoined] = useState("");
-  const socket = io('http://localhost:3000',  {autoConnect : false});
+  const [message, setMessage] = useState("");
 
   const connectToTheServer = (user:string) =>{
 
@@ -46,8 +52,15 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     
   },[socket])
 
+  useEffect(()=>{
+    socket.on('sendMessage',(data) =>{
+      setMessage(data);
+      console.log(data);
+    })
+  },[socket])
+
   return (
-    <ChatContext.Provider value={{ user, setUser , userJoined, connectToTheServer }}>
+    <ChatContext.Provider value={{ socket, user, setUser , userJoined, connectToTheServer, message, setMessage }}>
       {children}
     </ChatContext.Provider>
   );
