@@ -6,12 +6,9 @@ import { Button , Input} from 'antd';
 
 
 export default function ChatWindow(){
-    const {userJoined} = useChatContext();
-    const {socket, user } = useChatContext();
-    const {message} = useChatContext();
-    const {setMessage} = useChatContext();
+    const {userJoined, socket, user, currentMessage, setCurrentMessage, messageList, setMessageList} = useChatContext();
+ 
     const [showAlert, setShowAlert] = useState(false);
-    const [messageReceived, setMessageReceived] = useState("");
 
     useEffect(() => {
         if (userJoined) {
@@ -24,33 +21,27 @@ export default function ChatWindow(){
     }, [userJoined]);
     
 //SEND MESSAGE
-    const sendMessage = () => {
-        socket.emit("send_message", { message });
-    };
+    const sendMessage = async () => {
 
-    useEffect(() => {
-        socket.on("receive_message", (data) => {
-            setMessageReceived(data.message);
-        });
-    }, [socket]);
-
-
-
-
-
-  
-    /*const sendMessage = async () => {
         if (currentMessage !== "") {
             const messageData = {
+                //room: room,
                 author: user,
                 message: currentMessage,
                 time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
             };
 
             await socket.emit("send_message", messageData);
+            setMessageList((list) => [...list, messageData]);
         }
-    }*/
+   
+    };
 
+    useEffect(() => {
+        socket.on("receive_message", (message) => {
+            setMessageList((list) => [...list, message]);
+        });
+    }, [socket]);
 
     return ( 
        
@@ -68,17 +59,25 @@ export default function ChatWindow(){
             </div>
             
             <div className="Userinfo">
-             <p>UserName</p>
-             <p>12:50</p>
+                {messageList.map((messageContent) => {
+                    return (
+                        <div className="message"> 
+                            <div className="messageContent">
+                                <p>{messageContent.message}</p>
+                            </div>
+                            <div className="messageMeta">
+                                <p>{messageContent.time}</p>
+                                <p>{messageContent.author}</p>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
 
             <Alert className="message" message="Success Text" type="success" />
 
-            <h1>Message:</h1>
-            {messageReceived}
-
             <div className="chat-footer">
-                <Input onChange={(e)=> setMessage(e.target.value)} type="text" placeholder="Write your message..." />
+                <Input onChange={(e)=> setCurrentMessage(e.target.value)} type="text" placeholder="Write your message..." />
                 <Button onClick={sendMessage} type="primary">Send</Button>
             </div>
 
