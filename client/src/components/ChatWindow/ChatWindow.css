@@ -15,9 +15,7 @@
 }
 
 
-
 .Userinfo{
-    
     display: flex;
     gap: 8px;
 }
@@ -28,11 +26,22 @@
     color: rgb(135, 135, 135);
 }
 
-
-
-.message{
+.MessageContainer{
     display:  flex;
+    flex-direction: column;
     min-width: 50%;
-    
-
+    gap: 1rem;
 }
+
+.MessageBox {
+    display:  flex;
+    flex-direction: column;
+    border: 2px solid black;
+}
+
+.MessageMeta {
+    display:  flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+

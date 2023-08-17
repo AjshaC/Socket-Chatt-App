@@ -24,11 +24,17 @@ export default function ChatWindow(){
     const sendMessage = async () => {
 
         if (currentMessage !== "") {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
+
             const messageData = {
-                //room: room,
+                //room: room, //KOMPLETTERA MED DETTA SENARE!!!
                 author: user,
                 message: currentMessage,
-                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
+                time: hours + ":" + formattedMinutes,
             };
 
             await socket.emit("send_message", messageData);
@@ -58,14 +64,14 @@ export default function ChatWindow(){
                 
             </div>
             
-            <div className="Userinfo">
+            <div className="MessageContainer">
                 {messageList.map((messageContent) => {
                     return (
-                        <div className="message"> 
-                            <div className="messageContent">
+                        <div className="MessageBox"> 
+                            <div className="MessageContent">
                                 <p>{messageContent.message}</p>
                             </div>
-                            <div className="messageMeta">
+                            <div className="MessageMeta">
                                 <p>{messageContent.time}</p>
                                 <p>{messageContent.author}</p>
                             </div>
@@ -74,7 +80,7 @@ export default function ChatWindow(){
                 })}
             </div>
 
-            <Alert className="message" message="Success Text" type="success" />
+            <Alert className="message2" message="Success Text" type="success" />
 
             <div className="chat-footer">
                 <Input onChange={(e)=> setCurrentMessage(e.target.value)} type="text" placeholder="Write your message..." />
