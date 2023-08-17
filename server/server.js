@@ -18,9 +18,15 @@ const io = new Server(server, {
     console.log(socket.id);
 //add room
 
-      socket.on('join', (room)=> {
-      socket.join(room);
-      console.log(`User ${socket.id} joined room ${room}`);
+      socket.on('join', ( user,room)=> {
+
+      socket.join(user,room);
+
+      console.log(`User ${socket.id} with ${user},  joined room ${room}`);
+
+      //
+      
+       io.emit('userJoined', `User ${user} `);
 
     })
 
