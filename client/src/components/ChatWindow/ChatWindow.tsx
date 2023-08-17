@@ -8,9 +8,10 @@ import { Button , Input} from 'antd';
 export default function ChatWindow(){
     const {userJoined} = useChatContext();
     const {socket, user } = useChatContext();
-    //const {message} = useChatContext();
+    const {message} = useChatContext();
     const {setMessage} = useChatContext();
     const [showAlert, setShowAlert] = useState(false);
+    const [messageReceived, setMessageReceived] = useState("");
 
     useEffect(() => {
         if (userJoined) {
@@ -24,12 +25,12 @@ export default function ChatWindow(){
     
 //SEND MESSAGE
     const sendMessage = () => {
-        socket.emit("send_message", { message: "Hello"});
+        socket.emit("send_message", { message });
     };
 
     useEffect(() => {
         socket.on("receive_message", (data) => {
-            alert(data.message);
+            setMessageReceived(data.message);
         });
     }, [socket]);
 
@@ -71,13 +72,15 @@ export default function ChatWindow(){
              <p>12:50</p>
             </div>
 
+            <Alert className="message" message="Success Text" type="success" />
+
+            <h1>Message:</h1>
+            {messageReceived}
+
             <div className="chat-footer">
                 <Input onChange={(e)=> setMessage(e.target.value)} type="text" placeholder="Write your message..." />
                 <Button onClick={sendMessage} type="primary">Send</Button>
             </div>
-
-        
-            <Alert className="message" message="Success Text" type="success" />
 
         </div>
     )

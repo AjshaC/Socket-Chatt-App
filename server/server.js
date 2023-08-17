@@ -31,6 +31,7 @@ const io = new Server(server, {
 //send message
     socket.on('send_message', (message) => {
       socket.broadcast.emit('receive_message', message)
+      console.log(message);
     })
 //send message
 
