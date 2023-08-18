@@ -41,6 +41,7 @@ export default function ChatWindow(){
 
             await socket.emit("send_message", messageData);
             setMessageList((list) => [...list, messageData]);
+            setCurrentMessage("");
         }
    
     };
@@ -67,7 +68,7 @@ export default function ChatWindow(){
             </div>
             
             <div className="MessageContainer">
-                <ScrollToBottom></ScrollToBottom>
+                <ScrollToBottom>
                 {messageList.map((messageContent) => {
                     return (
                         <div className="MessageBox"> 
@@ -81,12 +82,13 @@ export default function ChatWindow(){
                         </div>
                     )
                 })}
+                </ScrollToBottom>
 
                 <Alert className="message2" message="Success Text" type="success" />
             </div>
 
             <div className="ChatFooter">
-                <Input onChange={(e)=> setCurrentMessage(e.target.value)} onKeyDown={(e) => {e.key === "Enter" && sendMessage();}} type="text" placeholder="Write your message..." />
+                <Input onChange={(e)=> setCurrentMessage(e.target.value)} onKeyDown={(e) => {e.key === "Enter" && sendMessage();}} type="text" value={currentMessage} placeholder="Write your message..." />
                 <Button onClick={sendMessage} type="primary"><SendOutlined /></Button>
             </div>
 
