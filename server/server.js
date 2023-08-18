@@ -26,14 +26,16 @@ const io = new Server(server, {
       //socket.broadcast.emit
       socket.broadcast.emit('userJoined', ` ${user} `);
     })
-    //add room
 
-//send message
-    socket.on('send_message', (message) => {
+    //send message
+      socket.on('send_message', (message) => {
       socket.broadcast.emit('receive_message', message) //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
       console.log(message);
     })
-//send message
+
+    //show typing
+    socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
+
 })
 
 server.listen(3000, () => console.log("server is up"));

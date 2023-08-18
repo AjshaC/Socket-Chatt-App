@@ -55,10 +55,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [typingUsers, setTypingUsers] = useState<User[]>([]);
-
-
+  
   const connectToTheServer = (user:string) =>{
-
        socket.connect();                 
        socket.emit('join', user , "lobby")
   }
@@ -68,7 +66,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setUserJoined(data);
       console.log(data);
     })
-    
   },[socket])
 
   useEffect(()=>{
