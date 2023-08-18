@@ -30,7 +30,7 @@ const io = new Server(server, {
 
 //send message
     socket.on('send_message', (message) => {
-      socket.emit('receive_message', message) //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
+      socket.broadcast.emit('receive_message', message) //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
       console.log(message);
     })
 //send message
