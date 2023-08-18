@@ -7,6 +7,10 @@ import { io, Socket } from 'socket.io-client';
 //   username : string;
 // }
 
+interface User {
+  username : string;
+}
+
 interface Message {
   author: string;
   message: string;
@@ -23,6 +27,8 @@ interface IChatContext {
   setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: Dispatch<SetStateAction<Message[]>>;
+  typingUsers: User[];
+  setTypingUsers: Dispatch<SetStateAction<User[]>>;
 }
 
 const socket = io('http://localhost:3000',  {autoConnect : false});
@@ -37,6 +43,8 @@ export const ChatContext = createContext<IChatContext>({
   setCurrentMessage: () => {},
   messageList: [],
   setMessageList: () => {},
+  typingUsers: [],
+  setTypingUsers: () => {},
 });
 
 export const useChatContext= () => useContext(ChatContext);
@@ -46,6 +54,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [userJoined, setUserJoined] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
+  const [typingUsers, setTypingUsers] = useState<User[]>([]);
+
 
   const connectToTheServer = (user:string) =>{
 
@@ -69,7 +79,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   },[socket])
 
   return (
-    <ChatContext.Provider value={{ socket, user, setUser , userJoined, connectToTheServer, currentMessage, setCurrentMessage, messageList, setMessageList }}>
+    <ChatContext.Provider value={{ socket, user, setUser , userJoined, connectToTheServer, currentMessage, setCurrentMessage, messageList, setMessageList, typingUsers, setTypingUsers}}>
       {children}
     </ChatContext.Provider>
   );

@@ -34,7 +34,6 @@ const io = new Server(server, {
       console.log(message);
     })
 //send message
+})
 
-  })
-
-  server.listen(3000, () => console.log("server is up"));
+server.listen(3000, () => console.log("server is up"));

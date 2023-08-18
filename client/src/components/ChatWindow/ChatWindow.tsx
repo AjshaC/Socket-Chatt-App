@@ -8,11 +8,23 @@ import ScrollToBottom from "react-scroll-to-bottom";
 
 
 export default function ChatWindow(){
-    const {userJoined, socket, user, currentMessage, setCurrentMessage, messageList, setMessageList} = useChatContext();
+    const {
+        userJoined, 
+        socket, 
+        user, 
+        currentMessage, 
+        setCurrentMessage, 
+        messageList, 
+        setMessageList, 
+        typingUsers, 
+        setTypingUsers
+    } = useChatContext();
  
     const [showAlert, setShowAlert] = useState(false);
-    const [isTyping, setIsTyping] = useState(false);
+    //const [typingUsers, setTypingUsers] = useState([]);
+    //const [isTyping, setIsTyping] = useState(false);
 
+    //SHOW THAT A NEW USER JOIN CHAT
     useEffect(() => {
         if (userJoined) {
             setShowAlert(true);
@@ -23,16 +35,6 @@ export default function ChatWindow(){
         }
     }, [userJoined]);
 
-    //SHOW THAT SOMEONE IS TYPING
-    const startTyping = () => {
-        setIsTyping(true);
-      };
-    
-    const stopTyping = () => {
-        setIsTyping(false);
-    };
-    //SHOW THAT SOMEONE IS TYPING
-    
     //SEND MESSAGE
     const sendMessage = async () => {
 
@@ -53,7 +55,6 @@ export default function ChatWindow(){
             await socket.emit("send_message", messageData);
             setMessageList((list) => [...list, messageData]);
             setCurrentMessage("");
-            stopTyping();
         }
    
     };
@@ -63,6 +64,15 @@ export default function ChatWindow(){
             setMessageList((list) => [...list, message]);
         });
     }, [socket]);
+
+    const handleKeyPress = (e: any) => {
+        (e: any) => {e.key === "Enter" && sendMessage();}
+        if (e.key === 'Enter') {
+          sendMessage();
+        } else {
+          socket.emit('typing', user);
+        }
+      };
 
     return ( 
        
@@ -82,10 +92,11 @@ export default function ChatWindow(){
             <div className="MessageContainer">
                 <ScrollToBottom>
 
-                    <div>
-                        {isTyping && <p>{user} is typing...</p>}
-                    </div>
-                    
+                {/* PLACERAR DENNA DÄR DET PASSAR NÄR CSS ÄR KLAR FÖR CHATTFÖNSTRET */}
+                <div>
+                
+                </div>
+
                 {messageList.map((messageContent) => {
                     return (
                         <div className="MessageBox"> 
@@ -100,25 +111,20 @@ export default function ChatWindow(){
                     )
                 })}
                 </ScrollToBottom>
-
-                <Alert className="message2" message="Success Text" type="success" />
             </div>
 
             <div className="ChatFooter">
                 <Input 
-                    onChange={(e)=> setCurrentMessage(e.target.value)}
-                    onFocus={startTyping}
-                    onBlur={stopTyping} 
-                    onKeyDown={(e) => {e.key === "Enter" && sendMessage();}} 
+                    onChange={(e)=> setCurrentMessage(e.target.value)} 
+                    onKeyDown={handleKeyPress} 
                     type="text" 
                     value={currentMessage} 
                     placeholder="Write your message..." />
+
                 <Button onClick={sendMessage} type="primary"><SendOutlined /></Button>
             </div>
 
         </div>
-
-        
     )
 }
 
