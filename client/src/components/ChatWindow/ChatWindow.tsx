@@ -11,6 +11,7 @@ export default function ChatWindow(){
     const {userJoined, socket, user, currentMessage, setCurrentMessage, messageList, setMessageList} = useChatContext();
  
     const [showAlert, setShowAlert] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
 
     useEffect(() => {
         if (userJoined) {
@@ -21,8 +22,18 @@ export default function ChatWindow(){
             return () => clearTimeout(timeout);
         }
     }, [userJoined]);
+
+    //SHOW THAT SOMEONE IS TYPING
+    const startTyping = () => {
+        setIsTyping(true);
+      };
     
-//SEND MESSAGE
+    const stopTyping = () => {
+        setIsTyping(false);
+    };
+    //SHOW THAT SOMEONE IS TYPING
+    
+    //SEND MESSAGE
     const sendMessage = async () => {
 
         if (currentMessage !== "") {
@@ -42,6 +53,7 @@ export default function ChatWindow(){
             await socket.emit("send_message", messageData);
             setMessageList((list) => [...list, messageData]);
             setCurrentMessage("");
+            stopTyping();
         }
    
     };
@@ -66,9 +78,14 @@ export default function ChatWindow(){
                     />
                 )}
             </div>
-            
+
             <div className="MessageContainer">
                 <ScrollToBottom>
+
+                    <div>
+                        {isTyping && <p>{user} is typing...</p>}
+                    </div>
+                    
                 {messageList.map((messageContent) => {
                     return (
                         <div className="MessageBox"> 
@@ -88,7 +105,14 @@ export default function ChatWindow(){
             </div>
 
             <div className="ChatFooter">
-                <Input onChange={(e)=> setCurrentMessage(e.target.value)} onKeyDown={(e) => {e.key === "Enter" && sendMessage();}} type="text" value={currentMessage} placeholder="Write your message..." />
+                <Input 
+                    onChange={(e)=> setCurrentMessage(e.target.value)}
+                    onFocus={startTyping}
+                    onBlur={stopTyping} 
+                    onKeyDown={(e) => {e.key === "Enter" && sendMessage();}} 
+                    type="text" 
+                    value={currentMessage} 
+                    placeholder="Write your message..." />
                 <Button onClick={sendMessage} type="primary"><SendOutlined /></Button>
             </div>
 
