@@ -16,16 +16,23 @@ export default function ChatWindow(){
         setCurrentMessage, 
         messageList, 
         setMessageList, 
-        typingUsers, 
-        setTypingUsers
+        //typingUsers, 
+        //setTypingUsers
     } = useChatContext();
  
     const [showAlert, setShowAlert] = useState(false);
     //const [typingUsers, setTypingUsers] = useState([]);
-    //const [isTyping, setIsTyping] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
 
-    const [typingStatus, setTypingStatus] = useState('');
+    const startTyping = () => {
+        setIsTyping(true);
+      };
+    
+    const stopTyping = () => {
+        setIsTyping(false);
+    };
 
+  
     //SHOW THAT A NEW USER JOIN CHAT
     useEffect(() => {
         if (userJoined) {
@@ -64,13 +71,6 @@ export default function ChatWindow(){
             setMessageList((list) => [...list, message]);
         });
     }, [socket]);
-
-    const handleTyping = () =>
-    socket.emit('typing', `${user} is typing ...`);
-
-    useEffect(() => {
-        socket.on('typingResponse', (data) => setTypingStatus(data));
-      }, [socket]);
 
 
     return ( 
@@ -112,7 +112,7 @@ export default function ChatWindow(){
 
                 {/*This is triggered when a user is typing*/}
                 <div className="IsTyping">
-                    <p>TYPING!!!! {typingStatus}</p>
+                    {isTyping && <p>{user} is typing...</p>}
                 </div>
                 </ScrollToBottom>
             </div>
@@ -120,7 +120,9 @@ export default function ChatWindow(){
             <div className="ChatFooter">
                 <Input 
                     onChange={(e)=> setCurrentMessage(e.target.value)} 
-                    onKeyDown={handleTyping}
+                    //onKeyDown={handleTyping}
+                    onFocus={startTyping}
+                    onBlur={stopTyping}
                     type="text" 
                     value={currentMessage} 
                     placeholder="Write your message..." />
