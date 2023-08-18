@@ -32,7 +32,7 @@ export default function ChatWindow(){
         setIsTyping(false);
     };
 
-  
+
     //SHOW THAT A NEW USER JOIN CHAT
     useEffect(() => {
         if (userJoined) {
@@ -120,7 +120,7 @@ export default function ChatWindow(){
             <div className="ChatFooter">
                 <Input 
                     onChange={(e)=> setCurrentMessage(e.target.value)} 
-                    //onKeyDown={handleTyping}
+                    onKeyDown= {(e) => {e.key === "Enter" && sendMessage();}}
                     onFocus={startTyping}
                     onBlur={stopTyping}
                     type="text" 
