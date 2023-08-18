@@ -34,7 +34,9 @@ const io = new Server(server, {
     })
 
     //show typing
-    socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
+    socket.on('is typing', function(data){
+    socket.broadcast.emit('typing', {user: data.user});
+    });
 
 })
 
