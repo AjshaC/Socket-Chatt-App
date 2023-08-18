@@ -4,6 +4,7 @@ import { Alert } from 'antd';
 import { useChatContext } from "../../context/chatContext";
 import { Button , Input} from 'antd';
 import { SendOutlined } from "@ant-design/icons";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 
 export default function ChatWindow(){
@@ -66,6 +67,7 @@ export default function ChatWindow(){
             </div>
             
             <div className="MessageContainer">
+                <ScrollToBottom></ScrollToBottom>
                 {messageList.map((messageContent) => {
                     return (
                         <div className="MessageBox"> 
