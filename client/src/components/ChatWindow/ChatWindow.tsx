@@ -24,6 +24,8 @@ export default function ChatWindow(){
     //const [typingUsers, setTypingUsers] = useState([]);
     //const [isTyping, setIsTyping] = useState(false);
 
+    const [typingStatus, setTypingStatus] = useState('');
+
     //SHOW THAT A NEW USER JOIN CHAT
     useEffect(() => {
         if (userJoined) {
@@ -42,7 +44,6 @@ export default function ChatWindow(){
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
-            
             const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
 
             const messageData = {
@@ -56,7 +57,6 @@ export default function ChatWindow(){
             setMessageList((list) => [...list, messageData]);
             setCurrentMessage("");
         }
-   
     };
 
     useEffect(() => {
@@ -65,14 +65,13 @@ export default function ChatWindow(){
         });
     }, [socket]);
 
-    const handleKeyPress = (e: any) => {
-        (e: any) => {e.key === "Enter" && sendMessage();}
-        if (e.key === 'Enter') {
-          sendMessage();
-        } else {
-          socket.emit('typing', user);
-        }
-      };
+    const handleTyping = () =>
+    socket.emit('typing', `${user} is typing ...`);
+
+    useEffect(() => {
+        socket.on('typingResponse', (data) => setTypingStatus(data));
+      }, [socket]);
+
 
     return ( 
        
@@ -110,13 +109,18 @@ export default function ChatWindow(){
                         </div>
                     )
                 })}
+
+                {/*This is triggered when a user is typing*/}
+                <div className="IsTyping">
+                    <p>TYPING!!!! {typingStatus}</p>
+                </div>
                 </ScrollToBottom>
             </div>
 
             <div className="ChatFooter">
                 <Input 
                     onChange={(e)=> setCurrentMessage(e.target.value)} 
-                    onKeyDown={handleKeyPress} 
+                    onKeyDown={handleTyping}
                     type="text" 
                     value={currentMessage} 
                     placeholder="Write your message..." />
