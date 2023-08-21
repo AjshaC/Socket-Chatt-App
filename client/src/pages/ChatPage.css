@@ -1,7 +1,16 @@
-.MainChatContent{
-    
-    display: flex;
-    flex-direction:row;
-    align-items: center;
-    min-height: 60vh;
+body {
+  background: #0a0a13;
+}
+
+.ChatPageWrapper {
+  height: 100%;
+  max-width: 100%;
+}
+
+.MainChatContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 60vh;
+  width: 100%;
 }

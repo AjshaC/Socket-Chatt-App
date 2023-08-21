@@ -1,33 +1,43 @@
 .JoinChatContainer {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   min-height: 50vh;
-   gap:8px;
-   width: 50%;
-   padding: 0px 50px 0px 50px;
-   border: 3px solid aliceblue;
-   border-radius: 16px;
-   background: rgba(211, 229, 245, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 50vh;
+  width: 40%;
+  padding: 0px 50px 0px 50px;
+  border: 3px solid aliceblue;
+  border-radius: 16px;
+  background: rgba(211, 229, 245, 0.7);
+}
+
+.InputButton {
+  display: flex;
+  width: 80%;
 }
 
 .UserNameInput {
-   border-radius: 5px;
+  border-radius: 16px 0px 0px 16px;
+  background: #0c2042;
+  border: none;
+  color: whitesmoke;
 }
 
-.JoinBtn{
-   background-color: midnightblue;
-   border-radius: 5px;
+.UserNameInput::placeholder {
+  color: whitesmoke;
 }
 
-
+.JoinBtn {
+  border-radius: 0px 16px 16px 0px;
+}
 
 @media (max-width: 768px) {
- .JoinChatContainer{
+  .JoinChatContainer {
     flex-direction: column;
- }    
+  }
 
- .JoinBtn{
+  .JoinBtn {
     width: 100%;
- }
+  }
 }

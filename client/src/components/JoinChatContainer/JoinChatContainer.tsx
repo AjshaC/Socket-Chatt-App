@@ -26,9 +26,12 @@ export default function JoinChatContainer(){
     return (
    
         <div className="JoinChatContainer">
+            <p>Choose a name to join a chat</p>
 
-            <Input className="UserNameInput" onChange={(e)=> setUser(e.target.value)} type="text" placeholder="Enter username..."/>
-            <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join A Chat</Button>
+            <div className="InputButton">
+                <Input className="UserNameInput" onChange={(e)=> setUser(e.target.value)} type="text" placeholder="Enter username..."/>
+                <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join A Chat</Button>
+            </div>
         </div>
     )
 }
