@@ -21,7 +21,9 @@ export default function ChatWindow() {
   const [showAlert, setShowAlert] = useState(false);
   //const [typingUsers, setTypingUsers] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  
 
+  //SHOW WHEN SOMEONE IS TYPING
   const startTyping = () => {
       setIsTyping(true);
     };
@@ -71,7 +73,8 @@ export default function ChatWindow() {
     });
   }, [socket]);
 
- 
+  
+
   return (
 
   <div className="ChatWindow">
@@ -94,9 +97,9 @@ export default function ChatWindow() {
         )}
       </div>
 
-        {messageList.map((messageContent) => {
+        {messageList.map((messageContent, index) => {
             return (
-              <div className="Message"> 
+              <div className="Message" key={index}>
 
                 <div className="MessageContent">
                   <p>{messageContent.message}</p>
