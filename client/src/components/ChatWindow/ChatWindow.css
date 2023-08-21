@@ -20,6 +20,7 @@
   flex-direction: column;
   min-width: 50%;
   gap: 1rem;
+  background-color: antiquewhite; /*BARA TILLFÄLLIG FÄRG FÖR ATT KUNNA SE CHATTARNA*/
 }
 
 .MessageBox {
