@@ -25,7 +25,7 @@ export default function JoinChatContainer(){
 
     return (
     <>
-        <Card title="Please, choose a name to join a chat" className="JoinChatContainer" bordered={false} style={{ maxWidth: 500 }}>
+        <Card title="Please, choose a name to join a chat" className="JoinChatContainer" bordered={false} style={{ maxWidth: 500, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <Space.Compact className="InputAndButton" style={{ width: '100%' }}>
                 <Input defaultValue="Enter username ..." onChange={(e)=> setUser(e.target.value)} type="text" style={{ background: '#0c2042', color: 'whitesmoke', border: 'none'}} />
                 <Button type="primary" onClick={joinChatClick}>Join</Button>
