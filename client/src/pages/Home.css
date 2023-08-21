@@ -1,25 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Lumanosimo&family=Sacramento&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lumanosimo&family=Sacramento&display=swap");
 
-.HomeWrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: url(../assets/background.png);
-    background-size: cover;
+.HomeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: url(../assets/background3.png);
+  background-size: cover;
 }
 
 .Logo {
-    font-family: 'Sacramento', cursive;
-    font-size: 4rem;
-    color: aliceblue;
-    text-shadow: 1px 1px 2px midnightblue;
+  font-family: "Sacramento", cursive;
+  font-size: 4rem;
+  color: aliceblue;
+  text-shadow: 1px 1px 2px midnightblue;
 }
 
 .LogoUppercase {
-    font-family: 'Lumanosimo', cursive;
-    text-transform: uppercase;
+  font-family: "Lumanosimo", cursive;
+  text-transform: uppercase;
+  font-size: 5rem;
 }
-
-

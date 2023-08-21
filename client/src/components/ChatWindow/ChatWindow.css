@@ -1,38 +1,58 @@
-.ChatWindow{
-    display: flex;
-    flex-direction: column;
-    padding-right: 8px;
-    min-height: 60vh;
-    width: 80%;
-    align-items: flex-end;
+.ChatWindow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-right: 8px;
+  min-height: 60vh;
+  width: 80%;
+  align-items: flex-end;
+  margin-left: 0%;
 }
-.UserJoined{
-    display: flex;
-    
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-
-
-.Userinfo{
-    
-    display: flex;
-    gap: 8px;
+.UserJoined {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
-.Userinfo p{
-    padding: 0;
-    margin: 0;
-    color: rgb(135, 135, 135);
+.MessageContainer {
+  display: flex;
+  flex-direction: column;
+  min-width: 50%;
+  gap: 1rem;
 }
 
+.MessageBox {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+}
 
+.MessageMeta {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
 
-.message{
-    display:  flex;
-    min-width: 50%;
-    
+.ChatFooter {
+  display: flex;
+  width: 99%;
+  position: absolute;
+  bottom: 0;
+}
 
+.SendInput {
+  border-radius: 0px;
+  padding-left: 5px;
+  background: #0c2042;
+  border: none;
+  color: whitesmoke;
+}
+
+.SendInput::placeholder {
+  color: whitesmoke;
+}
+
+.SendBtn {
+  border-radius: 0px 16px 16px 0px;
 }

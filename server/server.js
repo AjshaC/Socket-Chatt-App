@@ -16,22 +16,24 @@ const io = new Server(server, {
 
   io.on("connection", (socket)=>{
     console.log(socket.id);
-//add room
 
+    //add room
       socket.on('join', ( user,room)=> {
 
       socket.join(user,room);
-
-      console.log(`User ${socket.id} with ${user},  joined room ${room}`);
-
-      //
-      
+      console.log(`User with ID: ${socket.id} and username: ${user}, joined room: ${room}`);
+    
+      //socket.broadcast.emit
       socket.broadcast.emit('userJoined', ` ${user} `);
-      //  socket.broadcast.emit
-
     })
+    //add room
 
-//add room
+//send message
+    socket.on('send_message', (message) => {
+      socket.emit('receive_message', message) //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
+      console.log(message);
+    })
+//send message
 
   })
 
