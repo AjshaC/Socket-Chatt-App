@@ -22,3 +22,24 @@
   text-transform: uppercase;
   font-size: 5rem;
 }
+
+@media screen and (max-width: 440px) {
+
+  .Logo {
+    font-size: 3rem;
+  }
+  .LogoUppercase {
+    font-size: 4rem;
+  }
+}
+
+@media screen and (max-width: 350px) {
+
+  .Logo {
+    font-size: 2rem;
+  }
+  .LogoUppercase {
+    font-size: 3rem;
+  }
+}
+

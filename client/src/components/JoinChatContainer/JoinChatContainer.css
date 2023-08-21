@@ -8,27 +8,20 @@
   background: rgba(211, 229, 245, 0.7);
 }
 
-.InputContainer {
-  display: flex;
-  width: 100%;
-}
-
-.UserNameInput {
-  background: #0c2042;
-}
-
 .UserNameInput::placeholder {
   color: whitesmoke;
 }
 
 
-
-@media (max-width: 768px) {
-  .JoinChatContainer {
+/*@media (max-width: 768px) {
+  .InputAndButton {
     flex-direction: column;
   }
 
   .JoinBtn {
     width: 100%;
+    border-radius: 16px;
   }
-}
+}*/
+
+
