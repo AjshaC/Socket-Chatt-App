@@ -76,7 +76,14 @@ export default function ChatWindow() {
 
   <div className="ChatWindow">
 
-      <div className="UserJoined">
+    <div className="ChatHeader">
+      {isTyping && <p>{user} is typing...</p>}
+    </div>
+
+      <div className="ChatBody">
+        <ScrollToBottom className="MessageContainer">
+
+        <div className="UserJoined">
         {showAlert && (
           <Alert
             message={` ${userJoined} Joined Chat`}
@@ -87,11 +94,9 @@ export default function ChatWindow() {
         )}
       </div>
 
-      <div className="MessageContainer">
-        <ScrollToBottom>
-          {messageList.map((messageContent) => {
+        {messageList.map((messageContent) => {
             return (
-              <div className="MessageBox"> 
+              <div className="Message"> 
 
                 <div className="MessageContent">
                   <p>{messageContent.message}</p>
@@ -105,12 +110,9 @@ export default function ChatWindow() {
             )
           })}
 
-        {/*This is triggered when a user is typing*/}
-          <div className="IsTyping">
-            {isTyping && <p>{user} is typing...</p>}
-          </div>
-        
-          </ScrollToBottom>
+        </ScrollToBottom>
+      </div>
+
 
           <div className="ChatFooter">
             <Input
@@ -125,6 +127,6 @@ export default function ChatWindow() {
 
             <Button className="SendBtn" onClick={sendMessage} type="primary"><SendOutlined /></Button>
           </div>
-    </div>
   </div>
+  
 )}
