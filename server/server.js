@@ -16,12 +16,13 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(socket.id);
 
-  //join
+  //join room
   socket.on("join", (user, room) => {
     socket.join(user, room);
     console.log(
       `User with ID: ${socket.id} and username: ${user}, joined ${room}`
     );
+    console.log("io.sockets.adapter.rooms");
     socket.broadcast.emit("userJoined", ` ${user} `);
   });
 
