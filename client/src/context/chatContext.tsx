@@ -7,11 +7,16 @@ import { io, Socket } from 'socket.io-client';
 //   username : string;
 // }
 
+interface User {
+  username : string;
+}
+
 interface Message {
   author: string;
   message: string;
   time: string;
 }
+
 
 interface IChatContext {
   socket: Socket,
@@ -48,7 +53,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [messageList, setMessageList] = useState<Message[]>([]);
 
   const connectToTheServer = (user:string) =>{
-
        socket.connect();                 
        socket.emit('join', user , "lobby")
   }
@@ -58,7 +62,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setUserJoined(data);
       console.log(data);
     })
-    
   },[socket])
 
   useEffect(()=>{

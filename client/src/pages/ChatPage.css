@@ -4,12 +4,16 @@ body {
 
 .ChatPageWrapper {
   height: 100%;
-  max-width: 100%;
+  width: 100%;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
 }
 
 .MainChatContent {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   min-height: 60vh;
   width: 100%;

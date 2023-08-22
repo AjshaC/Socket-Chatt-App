@@ -1,11 +1,10 @@
 import "./JoinChatContainer.css";
 import {useNavigate} from "react-router-dom" ;
-import { Button, Input} from 'antd';
+import { Button, Input, Card, Space} from 'antd';
 import { useChatContext} from "../../context/chatContext";
 
 export default function JoinChatContainer(){
     const {user, setUser, connectToTheServer} = useChatContext();
-
 
     const navigate = useNavigate();
 
@@ -16,22 +15,19 @@ export default function JoinChatContainer(){
         }
                    
         else{
-
              console.log("no Username", user)
-
         }
         
     }
 
     return (
-   
-        <div className="JoinChatContainer">
-            <p>Choose a name to join a chat</p>
-
-            <div className="InputButton">
-                <Input className="UserNameInput" onChange={(e)=> setUser(e.target.value)} type="text" placeholder="Enter username..."/>
-                <Button className="JoinBtn" type="primary" onClick={joinChatClick}>Join A Chat</Button>
-            </div>
-        </div>
+    <>
+        <Card title="Please, choose a name to join a chat" className="JoinChatContainer" bordered={false} style={{ maxWidth: 500, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Space.Compact className="InputAndButton" style={{ width: '100%' }}>
+                <Input defaultValue="Enter username ..." onChange={(e)=> setUser(e.target.value)} type="text" style={{ background: '#0c2042', color: 'whitesmoke', border: 'none'}} />
+                <Button type="primary" onClick={joinChatClick}>Join</Button>
+            </Space.Compact>
+        </Card>
+    </>
     )
 }

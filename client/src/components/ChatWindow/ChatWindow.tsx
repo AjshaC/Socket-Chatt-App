@@ -4,8 +4,10 @@ import { Alert } from "antd";
 import { useChatContext } from "../../context/chatContext";
 import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 export default function ChatWindow() {
+
   const {
     userJoined,
     socket,
@@ -16,6 +18,8 @@ export default function ChatWindow() {
     setMessageList,
   } = useChatContext();
 
+  
+  //SHOW THAT A NEW USER JOIN CHAT
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
@@ -28,14 +32,15 @@ export default function ChatWindow() {
     }
   }, [userJoined]);
 
+  
   //SEND MESSAGE
-  const sendMessage = async () => {
-    if (currentMessage !== "") {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
+    const sendMessage = async () => {
 
-      const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
+      if (currentMessage !== "") {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
 
       const messageData = {
         //room: room, //KOMPLETTERA MED DETTA SENARE!!!
@@ -46,18 +51,32 @@ export default function ChatWindow() {
 
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
     }
   };
-
+           
   useEffect(() => {
     socket.on("receive_message", (message) => {
       setMessageList((list) => [...list, message]);
     });
   }, [socket]);
 
+  
+
   return (
-    <div className="ChatWindow">
-      <div className="UserJoined">
+
+  <div className="ChatWindow">
+
+<div className="ChatHeader">
+  <p>...is typing</p>
+</div>
+
+   
+
+      <div className="ChatBody">
+        <ScrollToBottom className="MessageContainer">
+
+        <div className="UserJoined">
         {showAlert && (
           <Alert
             message={` ${userJoined} Joined Chat`}
@@ -67,36 +86,46 @@ export default function ChatWindow() {
           />
         )}
       </div>
+      
 
-      <div className="MessageContainer">
         {messageList.map((messageContent) => {
-          return (
-            <div className="MessageBox">
-              <div className="MessageContent">
-                <p>{messageContent.message}</p>
-              </div>
-              <div className="MessageMeta">
-                <p>{messageContent.time}</p>
-                <p>{messageContent.author}</p>
-              </div>
-            </div>
-          );
-        })}
+          const messageKey = `${messageContent.message}-${messageContent.time}`;
+            return (
+              <div className="Message" key={messageKey}>
 
-        <Alert className="message2" message="Success Text" type="success" />
+                <div className="MessageContent">
+                  <p>{messageContent.message}</p>
+                </div>
+
+                <div className="MessageMeta">
+                  <p>{messageContent.time}</p>
+                  <p>{messageContent.author}</p>
+                </div>
+              </div>
+            )
+          })}
+
+        </ScrollToBottom>
       </div>
 
-      <div className="ChatFooter">
-        <Input
-          className="SendInput"
-          onChange={(e) => setCurrentMessage(e.target.value)}
-          type="text"
-          placeholder="Write your message..."
-        />
-        <Button className="SendBtn" onClick={sendMessage} type="primary">
-          <SendOutlined />
-        </Button>
-      </div>
-    </div>
-  );
-}
+
+          <div className="ChatFooter">
+            <Input
+              className="SendInput" 
+              onChange={(e)=> setCurrentMessage(e.target.value)} 
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  sendMessage();
+                } else {
+                  // Start typing indicator on any key press
+                }
+              }}
+              type="text" 
+              value={currentMessage} 
+              placeholder="Write your message..." />
+
+            <Button className="SendBtn" onClick={sendMessage} type="primary"><SendOutlined /></Button>
+          </div>
+  </div>
+  
+)}

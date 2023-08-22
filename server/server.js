@@ -18,23 +18,20 @@ const io = new Server(server, {
     console.log(socket.id);
 
     //add room
-      socket.on('join', ( user,room)=> {
+    socket.on('join', ( user,room)=> {
 
-      socket.join(user,room);
-      console.log(`User with ID: ${socket.id} and username: ${user}, joined room: ${room}`);
+    socket.join(user,room);
+    console.log(`User with ID: ${socket.id} and username: ${user}, joined room: ${room}`);
     
-      //socket.broadcast.emit
-      socket.broadcast.emit('userJoined', ` ${user} `);
+    socket.broadcast.emit('userJoined', ` ${user} `);
     })
-    //add room
 
-//send message
-    socket.on('send_message', (message) => {
-      socket.emit('receive_message', message) //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
+    //send message
+      socket.on('send_message', (message) => {
+      socket.broadcast.emit('receive_message', message) //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
       console.log(message);
     })
-//send message
 
-  })
+})
 
-  server.listen(3000, () => console.log("server is up"));
+server.listen(3000, () => console.log("server is up"));
