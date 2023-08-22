@@ -59,7 +59,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const connectToTheServer = (user: string) => {
     socket.connect();
-    socket.emit("join_lobby", user, "lobby");
+    socket.emit("join", user, "lobby");
   };
 
   useEffect(() => {

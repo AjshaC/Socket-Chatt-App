@@ -16,21 +16,13 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(socket.id);
 
-  //join lobby
-  socket.on("join_lobby", (user, room) => {
-    socket.join(user, room);
-    console.log(
-      `User with ID: ${socket.id} and username: ${user}, joined lobby`
-    );
-    socket.broadcast.emit("userJoined", ` ${user} `);
-  });
-
-  //join chatroom
-  socket.on("join_chatroom", (user, room) => {
+  //join
+  socket.on("join", (user, room) => {
     socket.join(user, room);
     console.log(
       `User with ID: ${socket.id} and username: ${user}, joined ${room}`
     );
+    socket.broadcast.emit("userJoined", ` ${user} `);
   });
 
   //send message
