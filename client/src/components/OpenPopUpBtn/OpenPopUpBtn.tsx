@@ -1,24 +1,25 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Modal, Input } from "antd";
 import "./OpenPopUpBtn.css";
-import { useChatContext } from "../../context/chatContext";
-import { io } from "socket.io-client";
-import { room, setRoom } from useChatContext();
 
+import { io } from "socket.io-client";
+import { useChatContext } from "../../context/chatContext";
 
 export default function OpenPopUpBtn() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { room, setRoom } = useChatContext();
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
-    if (!room) {
-      console.log("no Room Name");
+    if (!room.trim()) {
+      console.log("No Room Name");
     } else {
-      const socket = io("http://localhost:3000");
-      socket.emit("join", room);
+      //const socket = io("http://localhost:3000");
+      //socket.emit("join", room);
+      setRoom(room);
       console.log(room);
       setIsModalOpen(false);
     }
@@ -35,14 +36,24 @@ export default function OpenPopUpBtn() {
       <Modal
         title="Create Room"
         open={isModalOpen}
-        onOk={handleOk}
+        onOk={handleOk} //BUTTON TO CREATE A NEW ROOM
         onCancel={handleCancel}
       >
         <Input
+          value={room}
           onChange={(e) => setRoom(e.target.value)}
           placeholder="Room name"
         ></Input>
       </Modal>
+
+      {/*EXEMPEL*/}
+      <Button type="primary" onClick={() => setRoom("123")}>
+        Room 123
+      </Button>
+
+      <Button type="primary" onClick={() => setRoom("456")}>
+        Room 456
+      </Button>
     </>
   );
 }

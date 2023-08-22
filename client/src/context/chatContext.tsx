@@ -9,10 +9,6 @@ import {
 } from "react";
 import { io, Socket } from "socket.io-client";
 
-interface User {
-  username: string;
-}
-
 interface Message {
   author: string;
   message: string;
@@ -22,11 +18,13 @@ interface Message {
 interface IChatContext {
   socket: Socket;
   user: string;
+  isLoggedIn: boolean;
   userJoined: string;
-  room: string;
-  setRoom: Dispatch<SetStateAction<string>>;
   setUser: React.Dispatch<React.SetStateAction<string>>;
-  connectToTheServer: (user: string) => void;
+  //connectToTheServer: (user:string) => void;
+  connectToTheServer: () => void;
+  room: string;
+  setRoom: React.Dispatch<React.SetStateAction<string>>;
   currentMessage: string;
   setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
@@ -35,32 +33,48 @@ interface IChatContext {
 
 const socket = io("http://localhost:3000", { autoConnect: false });
 
-export const ChatContext = createContext<IChatContext>({
+const defaultValues = {
   socket,
   user: "",
+  isLoggedIn: false,
   userJoined: "",
-  setUser: () => {},
   room: "",
   setRoom: () => {},
-  connectToTheServer: (user: string) => {},
+  setUser: () => {},
+  connectToTheServer: () => {},
   currentMessage: "",
   setCurrentMessage: () => {},
   messageList: [],
   setMessageList: () => {},
-});
+};
+
+export const ChatContext = createContext<IChatContext>(defaultValues);
 
 export const useChatContext = () => useContext(ChatContext);
 
 export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [user, setUser] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userJoined, setUserJoined] = useState("");
+  const [room, setRoom] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
-  const [room, setRoom] = useState("");
 
-  const connectToTheServer = (user: string) => {
+  /*const connectToTheServer = (user:string) =>{
+       socket.connect();                 
+       socket.emit('join', user , "lobby")
+  }*/
+
+  useEffect(() => {
+    if (room) {
+      socket.emit("join_room", room);
+    }
+  }, [room]);
+
+  const connectToTheServer = () => {
     socket.connect();
-    socket.emit("join", user, "lobby");
+    setIsLoggedIn(true);
+    setRoom("Lobby");
   };
 
   useEffect(() => {
@@ -82,10 +96,11 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       value={{
         socket,
         user,
+        isLoggedIn,
         setUser,
+        userJoined,
         room,
         setRoom,
-        userJoined,
         connectToTheServer,
         currentMessage,
         setCurrentMessage,

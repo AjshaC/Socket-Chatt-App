@@ -13,20 +13,28 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
-  console.log(socket.id);
+//const rooms = []; SÄTTA LOGIKEN FÖR ATT SPARA RUM
 
-  //join room
-  socket.on("join", (user, room) => {
-    socket.join(user, room);
-    console.log(
-      `User with ID: ${socket.id} and username: ${user}, joined ${room}`
-    );
-    console.log("io.sockets.adapter.rooms");
-    socket.broadcast.emit("userJoined", ` ${user} `);
+io.on("connection", (socket) => {
+  //CONNECT TO SERVER
+  console.log("New user connected: ", socket.id);
+
+  //ADD ROOM
+  //socket.on('join', ( user,room)=> {
+
+  //socket.join(user,room);
+  //console.log(`User with ID: ${socket.id} and username: ${user}, joined room: ${room}`);
+
+  socket.on("join_room", (room) => {
+    socket.join(room);
+    //console.log("User tries to join ", room);
+    console.log(io.sockets.adapter.rooms);
   });
 
-  //send message
+  //NEW USER JOINED CHAT
+  //socket.broadcast.emit('userJoined', ` ${user} `);
+
+  //SEND MESSAGE
   socket.on("send_message", (message) => {
     socket.broadcast.emit("receive_message", message); //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
     console.log(message);
