@@ -8,6 +8,7 @@ import { useChatContext } from "../../context/chatContext";
 export default function OpenPopUpBtn() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { room, setRoom } = useChatContext();
+  const [ newRoom, setNewRoom] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -19,7 +20,8 @@ export default function OpenPopUpBtn() {
     } else {
       //const socket = io("http://localhost:3000");
       //socket.emit("join", room);
-      setRoom(room);
+      
+      setRoom(newRoom);
       console.log(room);
       setIsModalOpen(false);
     }
@@ -40,8 +42,8 @@ export default function OpenPopUpBtn() {
         onCancel={handleCancel}
       >
         <Input
-          value={room}
-          onChange={(e) => setRoom(e.target.value)}
+          value={newRoom}
+          onChange={(e) => setNewRoom(e.target.value)}
           placeholder="Room name"
         ></Input>
       </Modal>
