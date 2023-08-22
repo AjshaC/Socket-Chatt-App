@@ -14,15 +14,15 @@ export default function OpenPopUpBtn() {
   };
 
   const handleOk = () => {
-    if (!room.trim()) {
-      console.log("No Room Name");
-    } else {
-      //const socket = io("http://localhost:3000");
-      //socket.emit("join", room);
-      setRoom(room);
-      console.log(room);
-      setIsModalOpen(false);
-    }
+    // if (!room.trim()) {
+    //   console.log("No Room Name");
+    // } else {
+    //const socket = io("http://localhost:3000");
+    //socket.emit("join", room);
+    setRoom(room);
+    console.log(room);
+    setIsModalOpen(false);
+    // }
   };
 
   const handleCancel = () => {
@@ -40,6 +40,7 @@ export default function OpenPopUpBtn() {
         onCancel={handleCancel}
       >
         <Input
+          // defaultValue="Enter chat name ..."
           value={room}
           onChange={(e) => setRoom(e.target.value)}
           placeholder="Room name"
@@ -47,13 +48,13 @@ export default function OpenPopUpBtn() {
       </Modal>
 
       {/*EXEMPEL*/}
-      <Button type="primary" onClick={() => setRoom("123")}>
+      {/* <Button type="primary" onClick={() => setRoom("123")}>
         Room 123
       </Button>
 
       <Button type="primary" onClick={() => setRoom("456")}>
         Room 456
-      </Button>
+      </Button> */}
     </>
   );
 }
