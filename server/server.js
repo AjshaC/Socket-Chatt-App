@@ -25,6 +25,14 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("userJoined", ` ${user} `);
   });
 
+  //join chatroom
+  socket.on("join_chatroom", (user, room) => {
+    socket.join(user, room);
+    console.log(
+      `User with ID: ${socket.id} and username: ${user}, joined ${room}`
+    );
+  });
+
   //send message
   socket.on("send_message", (message) => {
     socket.broadcast.emit("receive_message", message); //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
