@@ -6,7 +6,6 @@ import { useChatContext} from "../../context/chatContext";
 export default function JoinChatContainer(){
     const {user, setUser, connectToTheServer} = useChatContext();
 
-
     const navigate = useNavigate();
 
     const joinChatClick = () => {
@@ -16,9 +15,7 @@ export default function JoinChatContainer(){
         }
                    
         else{
-
              console.log("no Username", user)
-
         }
         
     }
