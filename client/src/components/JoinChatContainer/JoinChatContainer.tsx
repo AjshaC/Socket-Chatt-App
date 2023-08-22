@@ -8,20 +8,20 @@ export default function JoinChatContainer() {
 
   const navigate = useNavigate();
 
-  // const joinChatClick = () => {
-  //     if(user.trim() !== ""){
-  //         connectToTheServer(user)
-  //         navigate("/chat");
-  //     }
-
-  //     else{
-  //          console.log("no Username", user)
-  //     }
-
-  // }
+  /*const joinChatClick = () => {
+        if(user.trim() !== ""){
+            connectToTheServer()
+            navigate("/chat");
+        }
+                   
+        else{
+             console.log("no Username", user)
+        }
+        
+    }*/
 
   const joinChatClick = () => {
-    connectToTheServer(user);
+    connectToTheServer();
     navigate("/chat");
   };
 
@@ -41,7 +41,8 @@ export default function JoinChatContainer() {
       >
         <Space.Compact className="InputAndButton" style={{ width: "100%" }}>
           <Input
-            defaultValue="Enter username ..."
+            placeholder="Enter username ..."
+            value={user}
             onChange={(e) => setUser(e.target.value)}
             type="text"
             style={{
