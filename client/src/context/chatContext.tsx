@@ -9,10 +9,6 @@ import {
 } from "react";
 import { io, Socket } from "socket.io-client";
 
-// export interface User {
-//   username : string;
-// }
-
 interface User {
   username: string;
 }
@@ -27,6 +23,8 @@ interface IChatContext {
   socket: Socket;
   user: string;
   userJoined: string;
+  room: string;
+  setRoom: Dispatch<SetStateAction<string>>;
   setUser: React.Dispatch<React.SetStateAction<string>>;
   connectToTheServer: (user: string) => void;
   currentMessage: string;
@@ -42,6 +40,8 @@ export const ChatContext = createContext<IChatContext>({
   user: "",
   userJoined: "",
   setUser: () => {},
+  room: "",
+  setRoom: () => {},
   connectToTheServer: (user: string) => {},
   currentMessage: "",
   setCurrentMessage: () => {},
@@ -56,6 +56,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [userJoined, setUserJoined] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
+  const [room, setRoom] = useState("");
 
   const connectToTheServer = (user: string) => {
     socket.connect();
@@ -82,6 +83,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         socket,
         user,
         setUser,
+        room,
+        setRoom,
         userJoined,
         connectToTheServer,
         currentMessage,

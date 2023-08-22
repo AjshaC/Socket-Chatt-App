@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Modal, Input } from "antd";
 import "./OpenPopUpBtn.css";
-
+import { useChatContext } from "../../context/chatContext";
 import { io } from "socket.io-client";
+import { room, setRoom } from useChatContext();
+
 
 export default function OpenPopUpBtn() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newRoom, setNewRoom] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
-    if (!newRoom) {
+    if (!room) {
       console.log("no Room Name");
     } else {
       const socket = io("http://localhost:3000");
-      socket.emit("join", newRoom);
-      console.log(newRoom);
+      socket.emit("join", room);
+      console.log(room);
       setIsModalOpen(false);
     }
   };
@@ -38,7 +39,7 @@ export default function OpenPopUpBtn() {
         onCancel={handleCancel}
       >
         <Input
-          onChange={(e) => setNewRoom(e.target.value)}
+          onChange={(e) => setRoom(e.target.value)}
           placeholder="Room name"
         ></Input>
       </Modal>
