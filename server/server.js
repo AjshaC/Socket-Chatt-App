@@ -18,13 +18,12 @@ const io = new Server(server, {
     console.log(socket.id);
 
     //add room
-      socket.on('join', ( user,room)=> {
+    socket.on('join', ( user,room)=> {
 
-      socket.join(user,room);
-      console.log(`User with ID: ${socket.id} and username: ${user}, joined room: ${room}`);
+    socket.join(user,room);
+    console.log(`User with ID: ${socket.id} and username: ${user}, joined room: ${room}`);
     
-      //socket.broadcast.emit
-      socket.broadcast.emit('userJoined', ` ${user} `);
+    socket.broadcast.emit('userJoined', ` ${user} `);
     })
 
     //send message
@@ -32,11 +31,6 @@ const io = new Server(server, {
       socket.broadcast.emit('receive_message', message) //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
       console.log(message);
     })
-
-    //show typing
-    socket.on('is typing', function(data){
-    socket.broadcast.emit('typing', {user: data.user});
-    });
 
 })
 

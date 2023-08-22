@@ -18,21 +18,10 @@ export default function ChatWindow() {
     setMessageList,
   } = useChatContext();
 
-  const [showAlert, setShowAlert] = useState(false);
-  //const [typingUsers, setTypingUsers] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
   
-
-  //SHOW WHEN SOMEONE IS TYPING
-  const startTyping = () => {
-      setIsTyping(true);
-    };
-  
-  const stopTyping = () => {
-      setIsTyping(false);
-  };
-
   //SHOW THAT A NEW USER JOIN CHAT
+  const [showAlert, setShowAlert] = useState(false);
+
   useEffect(() => {
     if (userJoined) {
       setShowAlert(true);
@@ -43,7 +32,7 @@ export default function ChatWindow() {
     }
   }, [userJoined]);
 
-
+  
   //SEND MESSAGE
     const sendMessage = async () => {
 
@@ -66,7 +55,6 @@ export default function ChatWindow() {
     }
   };
            
-
   useEffect(() => {
     socket.on("receive_message", (message) => {
       setMessageList((list) => [...list, message]);
@@ -79,9 +67,11 @@ export default function ChatWindow() {
 
   <div className="ChatWindow">
 
-    <div className="ChatHeader">
-      {isTyping && <p>{user} is typing...</p>}
-    </div>
+<div className="ChatHeader">
+  <p>...is typing</p>
+</div>
+
+   
 
       <div className="ChatBody">
         <ScrollToBottom className="MessageContainer">
@@ -96,10 +86,12 @@ export default function ChatWindow() {
           />
         )}
       </div>
+      
 
-        {messageList.map((messageContent, index) => {
+        {messageList.map((messageContent) => {
+          const messageKey = `${messageContent.message}-${messageContent.time}`;
             return (
-              <div className="Message" key={index}>
+              <div className="Message" key={messageKey}>
 
                 <div className="MessageContent">
                   <p>{messageContent.message}</p>
@@ -121,9 +113,13 @@ export default function ChatWindow() {
             <Input
               className="SendInput" 
               onChange={(e)=> setCurrentMessage(e.target.value)} 
-              onKeyDown= {(e) => {e.key === "Enter" && sendMessage();}}
-              onFocus={startTyping}
-              onBlur={stopTyping}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  sendMessage();
+                } else {
+                  // Start typing indicator on any key press
+                }
+              }}
               type="text" 
               value={currentMessage} 
               placeholder="Write your message..." />
