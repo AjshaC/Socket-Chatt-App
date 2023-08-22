@@ -22,7 +22,6 @@ io.on("connection", (socket) => {
     console.log(
       `User with ID: ${socket.id} and username: ${user}, joined lobby`
     );
-
     socket.broadcast.emit("userJoined", ` ${user} `);
   });
 
