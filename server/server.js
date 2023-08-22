@@ -13,7 +13,7 @@ const io = new Server(server, {
   },
 });
 
-//const rooms = []; SÄTTA LOGIKEN FÖR ATT SPARA RUM
+//const rooms = []; SÄTTA LOGIKEN FÖR ATT SPARA RUM?
 
 io.on("connection", (socket) => {
   //CONNECT TO SERVER

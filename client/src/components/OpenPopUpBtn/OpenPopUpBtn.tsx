@@ -49,13 +49,13 @@ export default function OpenPopUpBtn() {
       </Modal>
 
       {/*EXEMPEL*/}
-      <Button type="primary" onClick={() => setRoom("123")}>
+      {/* <Button type="primary" onClick={() => setRoom("123")}>
         Room 123
       </Button>
 
       <Button type="primary" onClick={() => setRoom("456")}>
         Room 456
-      </Button>
+      </Button> */}
     </>
   );
 }
