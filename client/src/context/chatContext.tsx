@@ -86,7 +86,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   //ROOM
   useEffect(() => {
     if (room) {
-      socket.emit("join_room", room);
+      socket.emit("join_room", user, room);
     }
   }, [room]);
 
@@ -95,22 +95,23 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   useEffect(() => {
     socket.on("userJoined", (data) => {
       setUserJoined(data);
-      console.log(data);
     });
 
     socket.on("sendMessage", (data) => {
       setCurrentMessage(data);
-      console.log(data);
     });
 
-    socket.on('typingResponse', (data) => setIsTyping(data));
+    socket.on("typingResponse", (data) => {
+      setIsTyping(data);
+      console.log(data);
+    }); 
   }, [socket]);
 
 
   //TYPING
   const handleTyping = () => {
     setIsTyping(true)
-    socket.emit('typing', `${user} is typing`)
+    socket.emit('typing', user)
   }
 
   const stopTyping = () => {

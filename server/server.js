@@ -27,15 +27,16 @@ io.on("connection", (socket) => {
   socket.on("join_room", (room) => {
     socket.join(room);
     socket.broadcast.emit("userJoined", user); //ADD ROOM
-    // console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
+    //console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
     console.log(io.sockets.adapter.rooms);
   });
 
   //TYPING
-  socket.on("typing", (user) => {
-    socket.broadcast.emit('typingResponse', `${user} is typing...`); //ADD ROOM
+  socket.on("typing", (data) => {
+    socket.broadcast.emit('typingResponse', data); //ADD ROOM
   });
 
+  
   //SEND MESSAGE
   socket.on("send_message", (message) => {
     socket.broadcast.emit("receive_message", message); //ADD ROOM
