@@ -13,7 +13,7 @@ const io = new Server(server, {
   },
 });
 
-//const rooms = []; SÄTTA LOGIKEN FÖR ATT SPARA RUM? Listan som uppdateras
+const roomList = [];
 
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
@@ -22,6 +22,21 @@ io.on("connection", (socket) => {
   //SAVE USERNAME
   const user = socket.handshake.auth.user;
   console.log(user);
+
+  //CREATE ROOM
+    // Listen for createRoom event
+    socket.on('createRoom', (room) => {
+      // Create a new room
+      const newRoom = {
+        name: room,
+        // Add other room details if needed
+      };
+      roomList.push(newRoom);
+  
+      // Emit updated room list to all clients
+      io.emit('updateRoomList', roomList);
+    });
+
 
   //ADD ROOM
   socket.on("join_room", (room) => {

@@ -15,6 +15,10 @@ interface Message {
   time: string;
 }
 
+interface Room {
+  name: string;
+}
+
 interface IChatContext {
   socket: Socket;
   user: string;
@@ -29,7 +33,9 @@ interface IChatContext {
   messageList: Message[];
   setMessageList: Dispatch<SetStateAction<Message[]>>;
   isTyping: boolean;
-  setIsTyping: Dispatch<SetStateAction<boolean>>
+  setIsTyping: Dispatch<SetStateAction<boolean>>;
+  roomList:Room[],
+  setRoomList: Dispatch<SetStateAction<Room[]>>;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -49,6 +55,8 @@ const defaultValues = {
   setMessageList: () => {},
   isTyping: false,
   setIsTyping: () => {},
+  roomList: [],
+  setRoomList: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -63,12 +71,14 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [roomList, setRoomList] = useState<Room[]>([]);
 
   /*const connectToTheServer = (user:string) =>{
        socket.connect();                 
        socket.emit('join', user , "lobby")
   }*/
 
+ 
   //CONNECT TO SERVER
   const connectToTheServer = () => {
     socket.connect();
@@ -83,6 +93,19 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       socket.emit("join_room", room);
     }
   }, [room]);
+
+  useEffect(() => {
+    // Listen for updated room list from the server
+    socket.on('updateRoomList', (updatedRooms) => {
+      console.log('Updated Room List:', updatedRooms);
+      setRoomList(updatedRooms);
+    });
+
+    // Clean up the socket event listener when the component unmounts
+    return () => {
+      socket.off('updateRoomList');
+    };
+  }, []);
 
 
   //SOCKET
@@ -125,7 +148,9 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         messageList,
         setMessageList,
         isTyping,
-        setIsTyping
+        setIsTyping,
+        roomList,
+        setRoomList,
       }}
     >
       {children}
