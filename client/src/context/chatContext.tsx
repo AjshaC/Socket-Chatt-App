@@ -15,6 +15,10 @@ interface Message {
   time: string;
 }
 
+interface Room {
+  name: string;
+}
+
 interface IChatContext {
   socket: Socket;
   user: string;
@@ -29,6 +33,8 @@ interface IChatContext {
   setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: Dispatch<SetStateAction<Message[]>>;
+  roomList: Room[];
+  setRoomList: Dispatch<SetStateAction<Room[]>>;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -46,6 +52,8 @@ const defaultValues = {
   setCurrentMessage: () => {},
   messageList: [],
   setMessageList: () => {},
+  roomList: [],
+  setRoomList: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -59,6 +67,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [room, setRoom] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
+  const [roomList, setRoomList] = useState<Room[]>([]);
 
   /*const connectToTheServer = (user:string) =>{
        socket.connect();                 
@@ -66,10 +75,10 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   }*/
 
   useEffect(() => {
-    if (room) {
+    if (room && room !== socket.id) {
       socket.emit("join_room", room);
     }
-  }, [room]);
+  }, [room, socket.id]);
 
   const connectToTheServer = () => {
     socket.connect();
@@ -89,6 +98,13 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     });
   }, [socket]);
 
+  useEffect(() => {
+    socket.on("room_array", (roomArray: Room[]) => {
+      console.log("Received room list from server", roomArray);
+      setRoomList(roomArray);
+    });
+  }, []);
+
   return (
     <ChatContext.Provider
       value={{
@@ -104,6 +120,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         setCurrentMessage,
         messageList,
         setMessageList,
+        roomList,
+        setRoomList,
       }}
     >
       {children}
