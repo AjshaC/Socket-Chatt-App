@@ -1,15 +1,13 @@
-
-import { createContext, useContext, useState, PropsWithChildren, useEffect, Dispatch, SetStateAction } from "react";
-import { io, Socket } from 'socket.io-client';
-
-
-// export interface User {
-//   username : string;
-// }
-
-interface User {
-  username : string;
-}
+import {
+  createContext,
+  useContext,
+  useState,
+  PropsWithChildren,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import { io, Socket } from "socket.io-client";
 
 interface Message {
   author: string;
@@ -17,62 +15,97 @@ interface Message {
   time: string;
 }
 
-
 interface IChatContext {
-  socket: Socket,
+  socket: Socket;
   user: string;
-  userJoined:string;
+  isLoggedIn: boolean;
+  userJoined: string;
   setUser: React.Dispatch<React.SetStateAction<string>>;
-  connectToTheServer: (user:string) => void; 
+  //connectToTheServer: (user:string) => void;
+  connectToTheServer: () => void;
+  room: string;
+  setRoom: React.Dispatch<React.SetStateAction<string>>;
   currentMessage: string;
   setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: Dispatch<SetStateAction<Message[]>>;
 }
 
-const socket = io('http://localhost:3000',  {autoConnect : false});
+const socket = io("http://localhost:3000", { autoConnect: false });
 
-export const ChatContext = createContext<IChatContext>({
+const defaultValues = {
   socket,
-  user:"",
-  userJoined:"",
+  user: "",
+  isLoggedIn: false,
+  userJoined: "",
+  room: "",
+  setRoom: () => {},
   setUser: () => {},
-  connectToTheServer: (user:string) => {},
-  currentMessage:"",
+  connectToTheServer: () => {},
+  currentMessage: "",
   setCurrentMessage: () => {},
   messageList: [],
   setMessageList: () => {},
-});
+};
 
-export const useChatContext= () => useContext(ChatContext);
+export const ChatContext = createContext<IChatContext>(defaultValues);
+
+export const useChatContext = () => useContext(ChatContext);
 
 export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [user, setUser] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userJoined, setUserJoined] = useState("");
+  const [room, setRoom] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
 
-  const connectToTheServer = (user:string) =>{
+  /*const connectToTheServer = (user:string) =>{
        socket.connect();                 
        socket.emit('join', user , "lobby")
-  }
+  }*/
 
-  useEffect(()=>{
-    socket.on('userJoined',(data) =>{
+  useEffect(() => {
+    if (room) {
+      socket.emit("join_room", room);
+    }
+  }, [room]);
+
+  const connectToTheServer = () => {
+    socket.connect();
+    socket.auth = { user };
+    setIsLoggedIn(true);
+    setRoom("Lobby");
+  };
+
+  useEffect(() => {
+    socket.on("userJoined", (data) => {
       setUserJoined(data);
       console.log(data);
-    })
-  },[socket])
-
-  useEffect(()=>{
-    socket.on('sendMessage',(data) =>{
+    });
+    socket.on("sendMessage", (data) => {
       setCurrentMessage(data);
       console.log(data);
-    })
-  },[socket])
+    });
+  }, [socket]);
 
   return (
-    <ChatContext.Provider value={{ socket, user, setUser , userJoined, connectToTheServer, currentMessage, setCurrentMessage, messageList, setMessageList }}>
+    <ChatContext.Provider
+      value={{
+        socket,
+        user,
+        isLoggedIn,
+        setUser,
+        userJoined,
+        room,
+        setRoom,
+        connectToTheServer,
+        currentMessage,
+        setCurrentMessage,
+        messageList,
+        setMessageList,
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );

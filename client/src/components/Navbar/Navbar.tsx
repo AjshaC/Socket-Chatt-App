@@ -1,12 +1,14 @@
 import "./Navbar.css";
 import { Button } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useChatContext } from "../../context/chatContext";
 
 import OpenPopUpBtn from "../OpenPopUpBtn/OpenPopUpBtn";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { user } = useChatContext();
 
   const goToHome = () => {
     navigate("/");
@@ -18,9 +20,13 @@ export default function Navbar() {
         <span className="LogoUppercase">chat</span> at eleven
       </h1>
       <div className="NavBtn">
+        <Button type="primary">
+          <UserOutlined />
+          {user}
+        </Button>
         <OpenPopUpBtn />
         <Button className="CloseBtn" type="primary" onClick={goToHome}>
-          <CloseOutlined />
+          Exit
         </Button>
       </div>
     </nav>
