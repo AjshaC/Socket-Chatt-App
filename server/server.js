@@ -26,14 +26,14 @@ io.on("connection", (socket) => {
 
   socket.on("join_room", (room) => {
     socket.join(room);
-    socket.to(room).broadcast.emit("userJoined", user);
+    socket.broadcast.emit("userJoined", user);
     // console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
     console.log(io.sockets.adapter.rooms);
   });
 
   //SEND MESSAGE
   socket.on("send_message", (message) => {
-    socket.to(room).broadcast.emit("receive_message", message);
+    socket.broadcast.emit("receive_message", message);
     console.log(message);
   });
 });
