@@ -73,6 +73,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const connectToTheServer = () => {
     socket.connect();
+    socket.auth = { user };
     setIsLoggedIn(true);
     setRoom("Lobby");
   };
@@ -82,9 +83,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setUserJoined(data);
       console.log(data);
     });
-  }, [socket]);
-
-  useEffect(() => {
     socket.on("sendMessage", (data) => {
       setCurrentMessage(data);
       console.log(data);

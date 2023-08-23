@@ -13,30 +13,27 @@ const io = new Server(server, {
   },
 });
 
-//const rooms = []; SÄTTA LOGIKEN FÖR ATT SPARA RUM?
+//const rooms = []; SÄTTA LOGIKEN FÖR ATT SPARA RUM? Listan som uppdateras
 
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
   console.log("New user connected: ", socket.id);
 
-  //ADD ROOM
-  //socket.on('join', ( user,room)=> {
+  const user = socket.handshake.auth.user;
+  console.log(user);
 
-  //socket.join(user,room);
-  //console.log(`User with ID: ${socket.id} and username: ${user}, joined room: ${room}`);
+  //ADD ROOM
 
   socket.on("join_room", (room) => {
     socket.join(room);
-    //console.log("User tries to join ", room);
+    socket.to(room).broadcast.emit("userJoined", user);
+    // console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
     console.log(io.sockets.adapter.rooms);
   });
 
-  //NEW USER JOINED CHAT
-  //socket.broadcast.emit('userJoined', ` ${user} `);
-
   //SEND MESSAGE
   socket.on("send_message", (message) => {
-    socket.broadcast.emit("receive_message", message); //KOMPLETTERA MED ROOM-ID HÄR SEDAN!!!!
+    socket.to(room).broadcast.emit("receive_message", message);
     console.log(message);
   });
 });
