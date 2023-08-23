@@ -2,9 +2,10 @@ import "./JoinChatContainer.css";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Card, Space } from "antd";
 import { useChatContext } from "../../context/chatContext";
+import { useEffect } from "react";
 
 export default function JoinChatContainer() {
-  const { user, setUser, connectToTheServer } = useChatContext();
+  const { socket, user, setUser, connectToTheServer } = useChatContext();
 
   const navigate = useNavigate();
 
@@ -23,6 +24,10 @@ export default function JoinChatContainer() {
   const joinChatClick = () => {
     connectToTheServer();
     navigate("/chat");
+
+    useEffect(() => {
+      socket.emit("join_default_room"); // Emit event to join the default room
+    }, []);
   };
 
   return (

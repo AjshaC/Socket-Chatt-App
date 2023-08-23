@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
   console.log(user);
 
 
-  //ADD ROOM
+  //JOIN LOBBY BY DEFAULT
   socket.on("join_room", (room) => {
     socket.join(room);
     socket.broadcast.emit("userJoined", user);
@@ -38,6 +38,23 @@ io.on("connection", (socket) => {
     socket.emit("room_array", roomArray);
     socket.broadcast.emit("userJoined", user); //ADD ROOM
     console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
+  });
+
+  socket.on("join_room", (room) => {
+    socket.join(room);
+    socket.broadcast.emit("userJoined", user);
+    console.log(io.sockets.adapter.rooms);
+    console.log("test");
+    console.log(roomArray);
+    socket.emit("room_array", roomArray);
+    socket.broadcast.emit("userJoined", user); //ADD ROOM
+    console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
+  });
+
+  //CREATE ROOM
+  socket.on("create_room", (room) => {
+    socket.join(room); // Join the new room
+    socket.emit("room_created", room); // Emit event to confirm room creation
   });
 
   //TYPING
