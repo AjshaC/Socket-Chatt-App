@@ -21,7 +21,6 @@ interface IChatContext {
   isLoggedIn: boolean;
   userJoined: string;
   setUser: React.Dispatch<React.SetStateAction<string>>;
-  //connectToTheServer: (user:string) => void;
   connectToTheServer: () => void;
   room: string;
   setRoom: React.Dispatch<React.SetStateAction<string>>;
@@ -29,6 +28,8 @@ interface IChatContext {
   setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: Dispatch<SetStateAction<Message[]>>;
+  isTyping: boolean;
+  setIsTyping: Dispatch<SetStateAction<boolean>>
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -46,6 +47,8 @@ const defaultValues = {
   setCurrentMessage: () => {},
   messageList: [],
   setMessageList: () => {},
+  isTyping: false,
+  setIsTyping: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -59,18 +62,14 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [room, setRoom] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
 
   /*const connectToTheServer = (user:string) =>{
        socket.connect();                 
        socket.emit('join', user , "lobby")
   }*/
 
-  useEffect(() => {
-    if (room) {
-      socket.emit("join_room", room);
-    }
-  }, [room]);
-
+  //CONNECT TO SERVER
   const connectToTheServer = () => {
     socket.connect();
     socket.auth = { user };
@@ -78,6 +77,15 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     setRoom("Lobby");
   };
 
+  //ROOM
+  useEffect(() => {
+    if (room) {
+      socket.emit("join_room", room);
+    }
+  }, [room]);
+
+
+  //SOCKET
   useEffect(() => {
     socket.on("userJoined", (data) => {
       setUserJoined(data);
@@ -88,6 +96,18 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       console.log(data);
     });
   }, [socket]);
+
+
+  //TYPING
+  useEffect(() => {
+    if (isTyping) {
+      socket.emit('typing', user);
+      console.log(user, " is typing...")
+    } else {
+      socket.emit('stoppedTyping', user);
+    }
+  }, [isTyping, user]);
+
 
   return (
     <ChatContext.Provider
@@ -104,6 +124,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         setCurrentMessage,
         messageList,
         setMessageList,
+        isTyping,
+        setIsTyping
       }}
     >
       {children}
