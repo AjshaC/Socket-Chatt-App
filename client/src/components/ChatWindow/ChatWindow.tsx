@@ -17,8 +17,9 @@ export default function ChatWindow() {
     setCurrentMessage,
     messageList,
     setMessageList,
-    //isTyping,
-    setIsTyping,
+    isTyping,
+    handleTyping,
+    stopTyping
   } = useChatContext();
 
   
@@ -71,10 +72,9 @@ export default function ChatWindow() {
   <div className="ChatWindow">
 
     <div className="ChatHeader">
-      {/*Tom div tills någon skriver. När man skickat sitt meddelande ska sitt namn försvinna från isTyping*/}
-      <p>...is typing</p>
+      {isTyping && <p>{user} is typing...</p>}
     </div>
-
+  
     <div className="ChatBody">
       <ScrollToBottom className="MessageContainer">
 
@@ -115,14 +115,14 @@ export default function ChatWindow() {
           className="SendInput" 
           onChange={(e) => {
             setCurrentMessage(e.target.value);
-            setIsTyping(e.target.value.length > 0);
-            setIsTyping(true);
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               sendMessage();
               } 
             }}
+          onFocus={handleTyping}
+          onBlur={stopTyping}
           type="text" 
           value={currentMessage} 
           placeholder="Write your message..." />

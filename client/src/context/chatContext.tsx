@@ -15,9 +15,6 @@ interface Message {
   time: string;
 }
 
-interface Room {
-  name: string;
-}
 
 interface IChatContext {
   socket: Socket;
@@ -34,8 +31,8 @@ interface IChatContext {
   setMessageList: Dispatch<SetStateAction<Message[]>>;
   isTyping: boolean;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
-  roomList:Room[],
-  setRoomList: Dispatch<SetStateAction<Room[]>>;
+  handleTyping: () => void;
+  stopTyping: () => void;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -55,8 +52,8 @@ const defaultValues = {
   setMessageList: () => {},
   isTyping: false,
   setIsTyping: () => {},
-  roomList: [],
-  setRoomList: () => {},
+  handleTyping: () => {},
+  stopTyping: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -71,7 +68,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [roomList, setRoomList] = useState<Room[]>([]);
 
   /*const connectToTheServer = (user:string) =>{
        socket.connect();                 
@@ -94,19 +90,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     }
   }, [room]);
 
-  useEffect(() => {
-    // Listen for updated room list from the server
-    socket.on('updateRoomList', (updatedRooms) => {
-      console.log('Updated Room List:', updatedRooms);
-      setRoomList(updatedRooms);
-    });
-
-    // Clean up the socket event listener when the component unmounts
-    return () => {
-      socket.off('updateRoomList');
-    };
-  }, []);
-
 
   //SOCKET
   useEffect(() => {
@@ -114,22 +97,25 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setUserJoined(data);
       console.log(data);
     });
+
     socket.on("sendMessage", (data) => {
       setCurrentMessage(data);
       console.log(data);
     });
+
+    socket.on('typingResponse', (data) => setIsTyping(data));
   }, [socket]);
 
 
   //TYPING
-  useEffect(() => {
-    if (isTyping) {
-      socket.emit('typing', user);
-      console.log(user, " is typing...")
-    } else {
-      socket.emit('stoppedTyping', user);
-    }
-  }, [isTyping, user]);
+  const handleTyping = () => {
+    setIsTyping(true)
+    socket.emit('typing', `${user} is typing`)
+  }
+
+  const stopTyping = () => {
+    setIsTyping(false)
+  }
 
 
   return (
@@ -149,8 +135,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         setMessageList,
         isTyping,
         setIsTyping,
-        roomList,
-        setRoomList,
+        handleTyping,
+        stopTyping,
       }}
     >
       {children}

@@ -13,7 +13,7 @@ const io = new Server(server, {
   },
 });
 
-const roomList = [];
+//const roomList = []; SPARA RUMMEN HÄR??
 
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
@@ -23,34 +23,25 @@ io.on("connection", (socket) => {
   const user = socket.handshake.auth.user;
   console.log(user);
 
-  //CREATE ROOM
-    // Listen for createRoom event
-    socket.on('createRoom', (room) => {
-      // Create a new room
-      const newRoom = {
-        name: room,
-        // Add other room details if needed
-      };
-      roomList.push(newRoom);
-  
-      // Emit updated room list to all clients
-      io.emit('updateRoomList', roomList);
-    });
-
-
   //ADD ROOM
   socket.on("join_room", (room) => {
     socket.join(room);
-    socket.broadcast.emit("userJoined", user);
+    socket.broadcast.emit("userJoined", user); //ADD ROOM
     // console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
     console.log(io.sockets.adapter.rooms);
   });
 
+  //TYPING
+  socket.on("typing", (user) => {
+    socket.broadcast.emit('typingResponse', `${user} is typing...`); //ADD ROOM
+  });
+
   //SEND MESSAGE
   socket.on("send_message", (message) => {
-    socket.broadcast.emit("receive_message", message);
+    socket.broadcast.emit("receive_message", message); //ADD ROOM
     console.log(message);
   });
+
 });
 
 server.listen(3000, () => console.log("server is up"));
