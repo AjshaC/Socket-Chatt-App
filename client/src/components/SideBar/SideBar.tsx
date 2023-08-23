@@ -18,7 +18,7 @@ export default function SideBar() {
   return (
     <div className="SideBar">
       <ul>
-        {roomArray.map((room, index) => (
+        {roomArray.slice(1).map((room, index) => (
           <li key={index}>{room}</li>
         ))}
       </ul>

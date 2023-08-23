@@ -15,6 +15,9 @@ const io = new Server(server, {
 
 //const rooms = []; SÄTTA LOGIKEN FÖR ATT SPARA RUM? Listan som uppdateras
 const availableRooms = [];
+const rooms = io.sockets.adapter.rooms;
+const roomArray = Array.from(rooms.keys());
+
 
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
@@ -29,17 +32,12 @@ io.on("connection", (socket) => {
   socket.on("join_room", (room) => {
     socket.join(room);
     socket.broadcast.emit("userJoined", user);
-    // console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
     console.log(io.sockets.adapter.rooms);
-    const rooms = io.sockets.adapter.rooms;
-    const roomArray = Array.from(rooms.keys());
     console.log("test");
     console.log(roomArray);
     socket.emit("room_array", roomArray);
     socket.broadcast.emit("userJoined", user); //ADD ROOM
     console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
-    //console.log(io.sockets.adapter.rooms);*/
-
   });
 
   //TYPING
