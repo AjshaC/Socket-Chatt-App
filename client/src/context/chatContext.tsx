@@ -15,6 +15,10 @@ interface Message {
   time: string;
 }
 
+interface Room {
+  name: string;
+}
+
 
 interface IChatContext {
   socket: Socket;
@@ -29,6 +33,8 @@ interface IChatContext {
   setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: Dispatch<SetStateAction<Message[]>>;
+  roomList: Room[];
+  setRoomList: Dispatch<SetStateAction<Room[]>>;
   isTyping: boolean;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
   handleTyping: () => void;
@@ -50,6 +56,8 @@ const defaultValues = {
   setCurrentMessage: () => {},
   messageList: [],
   setMessageList: () => {},
+  roomList: [],
+  setRoomList: () => {},
   isTyping: false,
   setIsTyping: () => {},
   handleTyping: () => {},
@@ -67,6 +75,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [room, setRoom] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<Message[]>([]);
+  const [roomList, setRoomList] = useState<Room[]>([]);
   const [isTyping, setIsTyping] = useState(false);
 
   /*const connectToTheServer = (user:string) =>{
@@ -74,7 +83,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
        socket.emit('join', user , "lobby")
   }*/
 
- 
+
   //CONNECT TO SERVER
   const connectToTheServer = () => {
     socket.connect();
@@ -85,11 +94,17 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
 
   //ROOM
-  useEffect(() => {
+  /*useEffect(() => {
     if (room) {
       socket.emit("join_room", room);
     }
-  }, [room]);
+  }, [room]);*/
+
+  useEffect(() => {
+    if (room && room !== socket.id) {
+      socket.emit("join_room", room);
+    }
+  }, [room, socket.id]);
 
 
   //SOCKET
@@ -107,6 +122,14 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       console.log(data);
     }); 
   }, [socket]);
+
+  
+  useEffect(() => {
+    socket.on("room_array", (roomArray: Room[]) => {
+      console.log("Received room list from server", roomArray);
+      setRoomList(roomArray);
+    });
+  }, []);
 
 
   //TYPING
@@ -135,6 +158,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         setCurrentMessage,
         messageList,
         setMessageList,
+        roomList,
+        setRoomList,
         isTyping,
         setIsTyping,
         handleTyping,
