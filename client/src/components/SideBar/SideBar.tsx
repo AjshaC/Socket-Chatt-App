@@ -1,14 +1,26 @@
 import "./SideBar.css";
+import { useState, useEffect } from "react";
+import { useChatContext } from "../../context/chatContext";
 
 export default function SideBar() {
+  const { socket } = useChatContext();
+
+  const [roomArray, setRoomArray] = useState([]);
+
+  useEffect(() => {
+    socket.emit("get_room_array"); // Request roomArray from server
+
+    socket.on("room_array", (data) => {
+      setRoomArray(data); // Update the state with roomArray from the server
+    });
+  }, []);
+
   return (
     <div className="SideBar">
       <ul>
-        Rooms
-        <li>Room 1</li>
-        <li>Room 2</li>
-        <li>Room 3</li>
-        <li>Room 4</li>
+        {roomArray.map((room, index) => (
+          <li key={index}>{room}</li>
+        ))}
       </ul>
     </div>
   );
