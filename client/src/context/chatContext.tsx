@@ -83,10 +83,11 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     setRoom("Lobby");
   };
 
+
   //ROOM
   useEffect(() => {
     if (room) {
-      socket.emit("join_room", user, room);
+      socket.emit("join_room", room);
     }
   }, [room]);
 

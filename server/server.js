@@ -23,12 +23,14 @@ io.on("connection", (socket) => {
   const user = socket.handshake.auth.user;
   console.log(user);
 
+
   //ADD ROOM
   socket.on("join_room", (room) => {
     socket.join(room);
     socket.broadcast.emit("userJoined", user); //ADD ROOM
-    //console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
-    console.log(io.sockets.adapter.rooms);
+    console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
+    //console.log(io.sockets.adapter.rooms);*/
+
   });
 
   //TYPING
