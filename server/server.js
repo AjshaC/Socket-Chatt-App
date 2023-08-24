@@ -18,9 +18,11 @@ io.on("connection", (socket) => {
   //CONNECT TO SERVER
   console.log("New user connected: ", socket.id);
 
+
   //SAVE USERNAME
   const user = socket.handshake.auth.user;
   console.log(user);
+
 
   //ROOM
   socket.on("join_room", (room) => {
@@ -31,24 +33,24 @@ io.on("connection", (socket) => {
     const availableRooms = []
     const rooms = io.sockets.adapter.rooms;
     console.log("ROOMS", rooms);
-
+  
     //Loop over the Map items where key and value are not the same
     for (const [key, value] of rooms) {
       if (key !== value && !(value.size === 1 && value.has(key))) {
-
+  
        //push to our room array
       availableRooms.push(key);
       console.log("AVAILABLE ROOMS", availableRooms);
   }
-}
-
-    socket.emit("room_array", availableRooms);
+  }
+  
+  socket.emit("room_array", availableRooms);
   });
 
 
   //TYPING
   socket.on("typing", (data) => {
-    socket.broadcast.emit('typingResponse', data); //ADD ROOM
+    socket.emit('typingResponse', data); //ADD ROOM
   });
 
   

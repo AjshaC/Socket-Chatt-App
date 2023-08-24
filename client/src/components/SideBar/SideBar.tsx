@@ -2,6 +2,7 @@ import "./SideBar.css";
 import { useState, useEffect } from "react";
 import { useChatContext } from "../../context/chatContext";
 
+
 export default function SideBar() {
   const { socket } = useChatContext();
 
@@ -14,6 +15,7 @@ export default function SideBar() {
       setRoomArray(data); // Update the state with roomArray from the server
     });
   }, []);
+
 
   return (
     <div className="SideBar">

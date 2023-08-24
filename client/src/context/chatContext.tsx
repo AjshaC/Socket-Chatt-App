@@ -104,17 +104,11 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
 
   //ROOM
-  /*useEffect(() => {
+  useEffect(() => {
     if (room) {
       socket.emit("join_room", room);
     }
-  }, [room]);*/
-
-  useEffect(() => {
-    if (room && room !== socket.id) {
-      socket.emit("join_room", room);
-    }
-  }, [room, socket.id]);
+  }, [room]);
 
 
   //SOCKET
@@ -129,7 +123,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
     socket.on("typingResponse", (data) => {
       setIsTyping(data);
-      console.log(data);
+      console.log(data, "is typing ...");
     }); 
   }, [socket]);
 
