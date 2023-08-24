@@ -92,6 +92,16 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     setRoom("Lobby");
   };
 
+  //TYPING
+  const handleTyping = () => {
+    setIsTyping(true)
+    socket.emit('typing', user)
+  }
+  
+  const stopTyping = () => {
+    setIsTyping(false)
+  }
+
 
   //ROOM
   /*useEffect(() => {
@@ -130,17 +140,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setRoomList(roomArray);
     });
   }, []);
-
-
-  //TYPING
-  const handleTyping = () => {
-    setIsTyping(true)
-    socket.emit('typing', user)
-  }
-
-  const stopTyping = () => {
-    setIsTyping(false)
-  }
 
 
   return (
