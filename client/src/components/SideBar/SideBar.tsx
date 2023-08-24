@@ -18,11 +18,9 @@ export default function SideBar() {
   }, []);
 
   function joinThisRoom(room : string) {
-
       socket.emit("join_room", room); 
       console.log(user, " joined the room: ", room);
   };
-
 
 
   return (
@@ -30,7 +28,7 @@ export default function SideBar() {
       <ul>
         {roomArray.map((room, index) => (
           <Button key={index} 
-          onClick={(e) => joinThisRoom(room)}>
+          onClick={() => joinThisRoom(room)}>
             {room}
           </Button>
 

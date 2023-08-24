@@ -47,6 +47,12 @@ io.on("connection", (socket) => {
   socket.emit("room_array", availableRooms);
   });
 
+  socket.on("leaveRoom", (room) => {
+    socket.leave(room);
+    //socket.to(room).emit('user left', socket.id);
+    console.log(`User ${user} disconnect from room: ${room}`)
+  });
+
 
   //TYPING
   socket.on("typing", (data) => {
@@ -56,7 +62,7 @@ io.on("connection", (socket) => {
   
   //SEND MESSAGE
   socket.on("send_message", (message) => {
-    socket.broadcast.emit("receive_message", message); //ADD ROOM
+    socket.to(message.room).emit("receive_message", message); //ADD ROOM
     console.log(message);
   });
 

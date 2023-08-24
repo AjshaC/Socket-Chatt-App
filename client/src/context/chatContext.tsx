@@ -40,6 +40,7 @@ interface IChatContext {
   setIsTyping: Dispatch<SetStateAction<boolean>>;
   handleTyping: () => void;
   stopTyping: () => void;
+  leaveRoom: () => void;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -63,6 +64,7 @@ const defaultValues = {
   setIsTyping: () => {},
   handleTyping: () => {},
   stopTyping: () => {},
+  leaveRoom: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -112,10 +114,21 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [room]);
 
 
+function leaveRoom() {
+    socket.emit("leaveRoom", room);
+    setRoom("Lobby") 
+    console.log(user, " leaved the room: ", room);
+};
+
+
   //SOCKET
   useEffect(() => {
     socket.on("userJoined", (data) => {
       setUserJoined(data);
+    });
+
+    socket.on("leaveRoom", (data) => {
+      console.log("Disconnected from room: ", data)
     });
 
     socket.on("sendMessage", (data) => {
@@ -135,6 +148,15 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       console.log("Received room list from server", roomArray);
       setRoomList(roomArray);
     });
+
+    socket.on('leaveRoom', (room: string) => {
+      socket.emit('leaveRoom', room);
+      console.log(`Left room: ${room}`);
+    });
+  
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
 
@@ -159,6 +181,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         setIsTyping,
         handleTyping,
         stopTyping,
+        leaveRoom,
       }}
     >
       {children}
