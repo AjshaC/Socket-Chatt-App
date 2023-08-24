@@ -10,13 +10,10 @@ export default function ChatWindow() {
 
   const {
     userJoined,
-    socket,
-    user,
-    room,
     currentMessage,
     setCurrentMessage,
     messageList,
-    setMessageList,
+    sendMessage,
     isTyping,
     handleTyping,
     stopTyping
@@ -37,36 +34,6 @@ export default function ChatWindow() {
   }, [userJoined]);
 
   
-  //SEND MESSAGE
-    const sendMessage = () => {
-
-      if (currentMessage !== "") {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
-
-      const messageData = {
-        room: room,
-        author: user,
-        message: currentMessage,
-        time: hours + ":" + formattedMinutes,
-      };
-
-      socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
-      setCurrentMessage("");
-    }
-  };
-           
-  useEffect(() => {
-    socket.on("receive_message", (message) => {
-      setMessageList((list) => [...list, message]);
-    });
-  }, [socket]);
-
-  
-
   return (
 
   <div className="ChatWindow">

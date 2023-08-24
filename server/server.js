@@ -49,6 +49,7 @@ io.on("connection", (socket) => {
 
   socket.on("leaveRoom", (room) => {
     socket.leave(room);
+    io.to(room).emit(`user ${user} has left the room`);
     //socket.to(room).emit('user left', socket.id);
     console.log(`User ${user} disconnect from room: ${room}`)
   });
@@ -62,7 +63,7 @@ io.on("connection", (socket) => {
   
   //SEND MESSAGE
   socket.on("send_message", (message) => {
-    socket.to(message.room).emit("receive_message", message); //ADD ROOM
+    socket.to(message.room).emit("receive_message", message); //PROBLEM ATT FÅ UT MEDDELANDENA RÄTT NÄR MAN HOPPAR MELLAN RUM
     console.log(message);
   });
 
