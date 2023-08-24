@@ -40,6 +40,7 @@ export default function JoinChatContainer() {
         
         <Space.Compact className="InputAndButton" style={{ width: "100%" }}>
           <Input
+            className="usernameInput"
             placeholder="Enter username ..."
             onChange={(e) => setUser(e.target.value)}
             type="text"
