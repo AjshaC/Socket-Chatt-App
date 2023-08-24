@@ -1,10 +1,11 @@
 import "./SideBar.css";
 import { useState, useEffect } from "react";
 import { useChatContext } from "../../context/chatContext";
+import { Button} from "antd";
 
 
 export default function SideBar() {
-  const { socket } = useChatContext();
+  const { socket, room } = useChatContext();
 
   const [roomArray, setRoomArray] = useState([]);
 
@@ -16,12 +17,21 @@ export default function SideBar() {
     });
   }, []);
 
+  const joinThisRoom = () => {
+
+      socket.emit("join_room", room); 
+      console.log(room);
+  };
+
+
 
   return (
     <div className="SideBar">
       <ul>
         {roomArray.map((room, index) => (
-          <li key={index}>{room}</li>
+          <Button key={index} 
+          onClick={(e) => joinThisRoom()}>
+            {room}</Button>
         ))}
       </ul>
     </div>

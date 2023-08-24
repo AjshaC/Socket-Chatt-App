@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
   socket.on("join_room", (room) => {
     socket.join(room);
     socket.broadcast.emit("userJoined", user);
-    // console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
+    console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
 
     const availableRooms = []
     const rooms = io.sockets.adapter.rooms;
@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
 
   //TYPING
   socket.on("typing", (data) => {
-    socket.emit('typingResponse', data); //ADD ROOM
+    socket.broadcast.emit('typingResponse', data); //ADD ROOM
   });
 
   
