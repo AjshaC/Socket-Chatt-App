@@ -123,8 +123,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
     socket.on("typingResponse", (data) => {
       setIsTyping(data);
-      console.log(data, "is typing ...");
     }); 
+    
   }, [socket]);
 
   

@@ -21,7 +21,7 @@ io.on("connection", (socket) => {
 
   //SAVE USERNAME
   const user = socket.handshake.auth.user;
-  console.log(user);
+  console.log("Logged in with Username: ", user);
 
 
   //ROOM
@@ -59,6 +59,11 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("receive_message", message); //ADD ROOM
     console.log(message);
   });
+
+  //DISCONNECT
+  socket.on("disconnect", () => {
+    console.log("User Disconnected: ", socket.id)
+  })
 
 });
 

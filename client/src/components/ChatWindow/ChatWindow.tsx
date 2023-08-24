@@ -120,9 +120,9 @@ export default function ChatWindow() {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               sendMessage();
-              } 
+              }
+              handleTyping(); 
             }}
-          onFocus={handleTyping}
           onBlur={stopTyping}
           type="text" 
           value={currentMessage} 
