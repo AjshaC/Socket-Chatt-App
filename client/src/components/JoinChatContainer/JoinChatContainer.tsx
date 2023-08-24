@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Button, Input, Card, Space } from "antd";
 import { useChatContext } from "../../context/chatContext";
 
+
 export default function JoinChatContainer() {
-  const { user, setUser, connectToTheServer } = useChatContext();
+  const { setUser, connectToTheServer } = useChatContext();
 
   const navigate = useNavigate();
 
@@ -42,7 +43,6 @@ export default function JoinChatContainer() {
         <Space.Compact className="InputAndButton" style={{ width: "100%" }}>
           <Input
             placeholder="Enter username ..."
-            value={user}
             onChange={(e) => setUser(e.target.value)}
             type="text"
             style={{

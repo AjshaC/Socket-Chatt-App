@@ -12,10 +12,14 @@ export default function ChatWindow() {
     userJoined,
     socket,
     user,
+    room,
     currentMessage,
     setCurrentMessage,
     messageList,
     setMessageList,
+    isTyping,
+    handleTyping,
+    stopTyping
   } = useChatContext();
 
   
@@ -34,7 +38,7 @@ export default function ChatWindow() {
 
   
   //SEND MESSAGE
-    const sendMessage = async () => {
+    const sendMessage = () => {
 
       if (currentMessage !== "") {
         const now = new Date();
@@ -43,13 +47,13 @@ export default function ChatWindow() {
         const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
 
       const messageData = {
-        //room: room, //KOMPLETTERA MED DETTA SENARE!!!
+        room: room,
         author: user,
         message: currentMessage,
         time: hours + ":" + formattedMinutes,
       };
 
-      await socket.emit("send_message", messageData);
+      socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }
@@ -67,16 +71,15 @@ export default function ChatWindow() {
 
   <div className="ChatWindow">
 
-<div className="ChatHeader">
-  <p>...is typing</p>
-</div>
+    <div className="ChatHeader">
+      {isTyping && <p>{user} is typing...</p>}
+    </div>
+  
+    <div className="ChatBody">
+      <ScrollToBottom className="MessageContainer">
 
-   
-
-      <div className="ChatBody">
-        <ScrollToBottom className="MessageContainer">
-
-        <div className="UserJoined">
+      {/*SHOW WHEN A NEW USER JOIN CHAT*/}
+      <div className="UserJoined">
         {showAlert && (
           <Alert
             message={` ${userJoined} Joined Chat`}
@@ -87,45 +90,44 @@ export default function ChatWindow() {
         )}
       </div>
       
+      {/*RENDER MESSAGES*/}
+      {messageList.map((messageContent) => {
+        const messageKey = `${messageContent.message}-${messageContent.time}`;
+          return (
+          <div className="Message" key={messageKey}>
 
-        {messageList.map((messageContent) => {
-          const messageKey = `${messageContent.message}-${messageContent.time}`;
-            return (
-              <div className="Message" key={messageKey}>
+            <div className="MessageContent">
+              <p>{messageContent.message}</p>
+            </div>
 
-                <div className="MessageContent">
-                  <p>{messageContent.message}</p>
-                </div>
-
-                <div className="MessageMeta">
-                  <p>{messageContent.time}</p>
-                  <p>{messageContent.author}</p>
-                </div>
-              </div>
-            )
-          })}
-
+            <div className="MessageMeta">
+              <p>{messageContent.time}</p>
+              <p>{messageContent.author}</p>
+            </div>
+          </div>
+          )
+        })}
         </ScrollToBottom>
       </div>
 
+      <div className="ChatFooter">
+        <Input
+          className="SendInput" 
+          onChange={(e) => {
+            setCurrentMessage(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              sendMessage();
+              } 
+            }}
+          onFocus={handleTyping}
+          onBlur={stopTyping}
+          type="text" 
+          value={currentMessage} 
+          placeholder="Write your message..." />
 
-          <div className="ChatFooter">
-            <Input
-              className="SendInput" 
-              onChange={(e)=> setCurrentMessage(e.target.value)} 
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  sendMessage();
-                } else {
-                  // Start typing indicator on any key press
-                }
-              }}
-              type="text" 
-              value={currentMessage} 
-              placeholder="Write your message..." />
-
-            <Button className="SendBtn" onClick={sendMessage} type="primary"><SendOutlined /></Button>
-          </div>
+        <Button className="SendBtn" onClick={sendMessage} type="primary"><SendOutlined /></Button>
+      </div>
   </div>
-  
 )}
