@@ -70,9 +70,10 @@ export default function ChatWindow() {
   return (
 
   <div className="ChatWindow">
-
+   
     <div className="ChatHeader">
-      {isTyping && <p>{user} is typing...</p>}
+      {/*TYPING INDICATOR*/}
+      {isTyping && <p>{isTyping} is typing ...</p>}
     </div>
   
     <div className="ChatBody">
@@ -119,9 +120,9 @@ export default function ChatWindow() {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               sendMessage();
-              } 
+              }
+              handleTyping(); 
             }}
-          onFocus={handleTyping}
           onBlur={stopTyping}
           type="text" 
           value={currentMessage} 

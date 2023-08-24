@@ -10,6 +10,7 @@ import {
 import { io, Socket } from "socket.io-client";
 
 interface Message {
+  room: string;
   author: string;
   message: string;
   time: string;
@@ -104,17 +105,11 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
 
   //ROOM
-  /*useEffect(() => {
-    if (room) {
-      socket.emit("join_room", room);
-    }
-  }, [room]);*/
-
   useEffect(() => {
-    if (room && room !== socket.id) {
-      socket.emit("join_room", room);
+    if (room) {
+      socket.emit("join_room", room, user);
     }
-  }, [room, socket.id]);
+  }, [room]);
 
 
   //SOCKET
@@ -129,8 +124,9 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
     socket.on("typingResponse", (data) => {
       setIsTyping(data);
-      console.log(data);
+      console.log(data, "is typing ...")
     }); 
+
   }, [socket]);
 
   
