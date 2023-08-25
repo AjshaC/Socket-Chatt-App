@@ -2,30 +2,27 @@ import "./JoinChatContainer.css";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Card, Space } from "antd";
 import { useChatContext } from "../../context/chatContext";
+import { useState } from "react";
 
 
 export default function JoinChatContainer() {
-  const { setUser, connectToTheServer } = useChatContext();
+  const { user, setUser, connectToTheServer } = useChatContext();
+  const [errorInfo, setErrorInfo] = useState("");
 
   const navigate = useNavigate();
 
-  /*const joinChatClick = () => {
+  const joinChatClick = () => {
         if(user.trim() !== ""){
             connectToTheServer()
             navigate("/chat");
         }
-                   
+         
         else{
-             console.log("no Username", user)
+          setErrorInfo("*Username is required")
         }
-        
-    }*/
+    }
 
-  const joinChatClick = () => {
-    connectToTheServer();
-    navigate("/chat");
-  };
-
+ 
   return (
     <>
       <Card
@@ -40,8 +37,10 @@ export default function JoinChatContainer() {
           alignItems: "center",
         }}
       >
+        
         <Space.Compact className="InputAndButton" style={{ width: "100%" }}>
           <Input
+            className="usernameInput"
             placeholder="Enter username ..."
             onChange={(e) => setUser(e.target.value)}
             type="text"
@@ -51,10 +50,14 @@ export default function JoinChatContainer() {
               border: "none",
             }}
           />
+
           <Button type="primary" onClick={joinChatClick}>
             Join
           </Button>
         </Space.Compact>
+
+        <p className="errorInfo">{errorInfo}</p>
+
       </Card>
     </>
   );

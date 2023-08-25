@@ -34,12 +34,12 @@ interface IChatContext {
   setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: Dispatch<SetStateAction<Message[]>>;
+  sendMessage: () => void;
   roomList: Room[];
   setRoomList: Dispatch<SetStateAction<Room[]>>;
   isTyping: boolean;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
-  handleTyping: () => void;
-  stopTyping: () => void;
+  //whenTyping: () => void;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -57,12 +57,12 @@ const defaultValues = {
   setCurrentMessage: () => {},
   messageList: [],
   setMessageList: () => {},
+  sendMessage: () => {},
   roomList: [],
   setRoomList: () => {},
   isTyping: false,
   setIsTyping: () => {},
-  handleTyping: () => {},
-  stopTyping: () => {},
+  //whenTyping: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -93,16 +93,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     setRoom("Lobby");
   };
 
-  //TYPING
-  const handleTyping = () => {
-    setIsTyping(true)
-    socket.emit('typing', user)
-  }
-  
-  const stopTyping = () => {
-    setIsTyping(false)
-  }
-
 
   //ROOM
   useEffect(() => {
@@ -112,14 +102,79 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [room]);
 
 
+/*function leaveRoom() {
+    socket.emit("leaveRoom", room);
+    setRoom("Lobby"); 
+    console.log(user, " leaved the room: ", room);
+};*/
+
+  //TYPING
+  /*const handleTyping = () => {
+    setIsTyping(true)
+    socket.emit('typing', user)
+  }
+
+  const stopTyping = () => {
+    setIsTyping(false)
+  }*/
+  
+//useeffect som lyssnar på currentMessage -> skicka   socket.emit('typing', user) till servern, skicka med room, variabel isTyping If ...
+//Sätt vår isTyping till true eller false
+//whoIsTyping som ett state??
+
+//useEffect som lyssnar på om currentMessage ändras -> då skickar vi socket.emit('typing', user) till servern. Även room bör skickas med
+
+//skapa const isTyping -> if: currentMessage.length = 0 = false, currentMessage.length = minst 1 = true BOOLEAN
+//servern ska skicka tillbaka och det blir vår setIsTyping
+
+
+//sätt ett till state med whoIsTyping? -> string, user
+
+/*const whenTyping = () => {
+  if (currentMessage.length === 0 ) {
+    setIsTyping(false)
+  } else {
+    setIsTyping(true)
+  }
+}*/
+
+useEffect(() => 
+{ if (currentMessage.length < 1) 
+  { setIsTyping(false); } 
+  else 
+  { setIsTyping(true);} 
+  socket.emit('typing', user, room)
+}, [currentMessage]);
+
+
+
+  //SEND MESSAGE
+  const sendMessage = () => {
+
+    if (currentMessage !== "") {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
+
+    const messageData = {
+      room: room,
+      author: user,
+      message: currentMessage,
+      time: hours + ":" + formattedMinutes,
+    };
+
+    socket.emit("send_message", messageData);
+    setMessageList((list) => [...list, messageData]);
+    setCurrentMessage("");
+  }
+};
+
+
   //SOCKET
   useEffect(() => {
     socket.on("userJoined", (data) => {
       setUserJoined(data);
-    });
-
-    socket.on("sendMessage", (data) => {
-      setCurrentMessage(data);
     });
 
     socket.on("typingResponse", (data) => {
@@ -127,6 +182,21 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       console.log(data, "is typing ...")
     }); 
 
+    socket.on("sendMessage", (data) => {
+      setCurrentMessage(data);
+    });
+
+    socket.on("receive_message", (message) => {
+      setMessageList((list) => [...list, message]);
+    });
+
+    /*socket.on("leaveRoom", (data) => {
+      console.log("Disconnected from room: ", data)
+    });*/
+
+    /*return () => {
+      socket.disconnect();
+    };*/
   }, [socket]);
 
   
@@ -153,12 +223,12 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         setCurrentMessage,
         messageList,
         setMessageList,
+        sendMessage,
         roomList,
         setRoomList,
         isTyping,
         setIsTyping,
-        handleTyping,
-        stopTyping,
+        //whenTyping,
       }}
     >
       {children}

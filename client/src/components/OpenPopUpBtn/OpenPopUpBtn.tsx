@@ -7,7 +7,7 @@ import { useChatContext } from "../../context/chatContext";
 
 export default function OpenPopUpBtn() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { socket, room, setRoom } = useChatContext();
+  const { room, setRoom } = useChatContext();
   const [newRoom, setNewRoom] = useState("");
 
   const showModal = () => {
@@ -19,18 +19,18 @@ export default function OpenPopUpBtn() {
       console.log("No Room Name");
     } else {
       setRoom(newRoom);
-      socket.emit("create_room", newRoom); 
-      //console.log(newRoom);
+      setNewRoom("");
       setIsModalOpen(false);
     }
   };
 
+  
   const handleCancel = () => {
     setIsModalOpen(false);
   };
   return (
     <>
-      <Button className="OpenPopUpBtn" type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showModal}>
         Create room
       </Button>
       <Modal

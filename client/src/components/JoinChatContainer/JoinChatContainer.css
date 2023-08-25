@@ -8,6 +8,14 @@
   color: whitesmoke;
 }
 
+.errorInfo {
+  color: red;
+}
+
+.usernameInput::placeholder {
+  color: whitesmoke;
+}
+
 
 /*@media (max-width: 768px) {
   .InputAndButton {

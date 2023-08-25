@@ -14,6 +14,7 @@ export default function Navbar() {
     navigate("/");
   };
 
+
   return (
     <nav>
       <h1 className="Logo">
@@ -25,7 +26,8 @@ export default function Navbar() {
           {user}
         </Button>
         <OpenPopUpBtn />
-        <Button className="CloseBtn" type="primary" onClick={goToHome}>
+
+        <Button type="primary" onClick={goToHome}>
           Exit
         </Button>
       </div>
