@@ -5,7 +5,7 @@ import { Button} from "antd";
 
 
 export default function SideBar() {
-  const { socket, user} = useChatContext();
+  const { socket, user, room, setRoom } = useChatContext();
 
   const [roomArray, setRoomArray] = useState([]);
 
@@ -17,9 +17,12 @@ export default function SideBar() {
     });
   }, []);
 
-  function joinThisRoom(room : string) {
-      socket.emit("join_room", room); 
-      console.log(user, " joined the room: ", room);
+  const joinRoom = (newRoom : string) => {
+    if (room) {
+      socket.emit("leave_room", room); // Leave the old room
+    }
+    socket.emit("join_room", newRoom);
+    setRoom(newRoom);
   };
 
 
@@ -28,7 +31,7 @@ export default function SideBar() {
       <ul>
         {roomArray.map((room, index) => (
           <Button key={index} 
-          onClick={() => joinThisRoom(room)}>
+          onClick={() => joinRoom(room)}>
             {room}
           </Button>
 
