@@ -15,8 +15,6 @@ export default function ChatWindow() {
     messageList,
     sendMessage,
     isTyping,
-    handleTyping,
-    stopTyping
   } = useChatContext();
 
   
@@ -88,9 +86,7 @@ export default function ChatWindow() {
             if (e.key === "Enter") {
               sendMessage();
               }
-              handleTyping(); 
             }}
-          onBlur={stopTyping}
           type="text" 
           value={currentMessage} 
           placeholder="Write your message..." />

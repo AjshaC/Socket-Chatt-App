@@ -8,7 +8,7 @@ import OpenPopUpBtn from "../OpenPopUpBtn/OpenPopUpBtn";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user, leaveRoom } = useChatContext();
+  const { user } = useChatContext();
 
   const goToHome = () => {
     navigate("/");
@@ -26,9 +26,7 @@ export default function Navbar() {
           {user}
         </Button>
         <OpenPopUpBtn />
-        <Button type="primary" onClick={leaveRoom}>
-          Leave room
-        </Button>
+
         <Button type="primary" onClick={goToHome}>
           Exit
         </Button>

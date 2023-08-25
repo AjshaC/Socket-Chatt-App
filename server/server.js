@@ -13,6 +13,7 @@ const io = new Server(server, {
   },
 });
 
+const availableRooms = []
 
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
@@ -27,13 +28,14 @@ io.on("connection", (socket) => {
   //ROOM
   socket.on("join_room", (room) => {
     socket.join(room);
-    socket.broadcast.emit("userJoined", user);
+    socket.to(room).emit("userJoined", user);
     console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${room}`);
 
-    const availableRooms = []
+  
     const rooms = io.sockets.adapter.rooms;
     console.log("ROOMS", rooms);
   
+    //LÄGG SOM EN FUNKTION ISTÄLLET. SKICKAR IN INBYGGD LISTA TILL FUNKTIONEN, GÖR OM DEN OCH RETURNA VÅR LISTA
     //Loop over the Map items where key and value are not the same
     for (const [key, value] of rooms) {
       if (key !== value && !(value.size === 1 && value.has(key))) {
@@ -44,20 +46,20 @@ io.on("connection", (socket) => {
   }
   }
   
-  socket.emit("room_array", availableRooms);
+  io.emit("room_array", availableRooms);
   });
 
-  socket.on("leaveRoom", (room) => {
+  /*socket.on("leaveRoom", (room) => {
     socket.leave(room);
     io.to(room).emit(`user ${user} has left the room`);
     //socket.to(room).emit('user left', socket.id);
     console.log(`User ${user} disconnect from room: ${room}`)
-  });
+  });*/
 
 
   //TYPING
-  socket.on("typing", (data) => {
-    socket.broadcast.emit('typingResponse', data); //ADD ROOM
+  socket.on("typing", (data, room) => {
+    socket.to(room).emit('typingResponse', data); //ADD ROOM
   });
 
   
@@ -73,5 +75,7 @@ io.on("connection", (socket) => {
   })
 
 });
+
+ //FUNKTIONEN HÄR!!!!! ÄVEN USER HÄR OM VI HINNER
 
 server.listen(3000, () => console.log("server is up"));

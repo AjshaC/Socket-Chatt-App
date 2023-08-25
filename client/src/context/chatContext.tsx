@@ -39,9 +39,7 @@ interface IChatContext {
   setRoomList: Dispatch<SetStateAction<Room[]>>;
   isTyping: boolean;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
-  handleTyping: () => void;
-  stopTyping: () => void;
-  leaveRoom: () => void;
+  //whenTyping: () => void;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -64,9 +62,7 @@ const defaultValues = {
   setRoomList: () => {},
   isTyping: false,
   setIsTyping: () => {},
-  handleTyping: () => {},
-  stopTyping: () => {},
-  leaveRoom: () => {},
+  //whenTyping: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -106,21 +102,51 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [room]);
 
 
-function leaveRoom() {
+/*function leaveRoom() {
     socket.emit("leaveRoom", room);
     setRoom("Lobby"); 
     console.log(user, " leaved the room: ", room);
-};
+};*/
 
   //TYPING
-  const handleTyping = () => {
+  /*const handleTyping = () => {
     setIsTyping(true)
     socket.emit('typing', user)
   }
-  
+
   const stopTyping = () => {
     setIsTyping(false)
+  }*/
+  
+//useeffect som lyssnar på currentMessage -> skicka   socket.emit('typing', user) till servern, skicka med room, variabel isTyping If ...
+//Sätt vår isTyping till true eller false
+//whoIsTyping som ett state??
+
+//useEffect som lyssnar på om currentMessage ändras -> då skickar vi socket.emit('typing', user) till servern. Även room bör skickas med
+
+//skapa const isTyping -> if: currentMessage.length = 0 = false, currentMessage.length = minst 1 = true BOOLEAN
+//servern ska skicka tillbaka och det blir vår setIsTyping
+
+
+//sätt ett till state med whoIsTyping? -> string, user
+
+/*const whenTyping = () => {
+  if (currentMessage.length === 0 ) {
+    setIsTyping(false)
+  } else {
+    setIsTyping(true)
   }
+}*/
+
+useEffect(() => 
+{ if (currentMessage.length < 1) 
+  { setIsTyping(false); } 
+  else 
+  { setIsTyping(true);} 
+  socket.emit('typing', user, room)
+}, [currentMessage]);
+
+
 
   //SEND MESSAGE
   const sendMessage = () => {
@@ -164,9 +190,9 @@ function leaveRoom() {
       setMessageList((list) => [...list, message]);
     });
 
-    socket.on("leaveRoom", (data) => {
+    /*socket.on("leaveRoom", (data) => {
       console.log("Disconnected from room: ", data)
-    });
+    });*/
 
     /*return () => {
       socket.disconnect();
@@ -202,9 +228,7 @@ function leaveRoom() {
         setRoomList,
         isTyping,
         setIsTyping,
-        handleTyping,
-        stopTyping,
-        leaveRoom,
+        //whenTyping,
       }}
     >
       {children}
