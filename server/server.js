@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
     //LÄGG SOM EN FUNKTION ISTÄLLET. SKICKAR IN INBYGGD LISTA TILL FUNKTIONEN, GÖR OM DEN OCH RETURNA VÅR LISTA
     //Loop over the Map items where key and value are not the same
     for (const [key, value] of rooms) {
-      if (key !== value && !(value.size === 1 && value.has(key))) {
+      if (key !== value && !(value.size === 1 && value.has(key)) && !availableRooms.includes(key)) {
   
        //push to our room array
       availableRooms.push(key);

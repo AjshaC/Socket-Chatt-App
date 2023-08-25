@@ -19,10 +19,12 @@ export default function OpenPopUpBtn() {
       console.log("No Room Name");
     } else {
       setRoom(newRoom);
+      setNewRoom("");
       setIsModalOpen(false);
     }
   };
 
+  
   const handleCancel = () => {
     setIsModalOpen(false);
   };
