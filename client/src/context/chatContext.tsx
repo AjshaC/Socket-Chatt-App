@@ -39,7 +39,6 @@ interface IChatContext {
   setRoomList: Dispatch<SetStateAction<Room[]>>;
   isTyping: boolean;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
-  //whenTyping: () => void;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -62,7 +61,6 @@ const defaultValues = {
   setRoomList: () => {},
   isTyping: false,
   setIsTyping: () => {},
-  //whenTyping: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -78,11 +76,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [roomList, setRoomList] = useState<Room[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-
-  /*const connectToTheServer = (user:string) =>{
-       socket.connect();                 
-       socket.emit('join', user , "lobby")
-  }*/
 
 
   //CONNECT TO SERVER

@@ -76,6 +76,7 @@ export default function ChatWindow() {
         </ScrollToBottom>
       </div>
 
+      {/*INPUT FOR WRITE AND SEND MESSAGES*/}
       <div className="ChatFooter">
         <Input
           className="SendInput" 

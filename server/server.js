@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
 
   //TYPING
   socket.on("typing", (data, room) => {
-    socket.to(room).emit('typingResponse', data);
+      socket.to(room).emit('typingResponse', data);
   });
 
   
