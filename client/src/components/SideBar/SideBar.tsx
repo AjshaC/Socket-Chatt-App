@@ -9,6 +9,7 @@ export default function SideBar() {
   const { socket, user, room, setRoom } = useChatContext();
 
   const [roomArray, setRoomArray] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState("");
 
   useEffect(() => {
     socket.emit("get_room_array"); // Request roomArray from server
@@ -24,6 +25,7 @@ export default function SideBar() {
     }
     socket.emit("join_room", newRoom);
     setRoom(newRoom);
+    setSelectedRoom(newRoom);
   };
 
 
@@ -32,13 +34,14 @@ export default function SideBar() {
 
       <div className="ChatInLog">
         <p className="UserInfo"><UserOutlined /> {user}</p>
-        <p className="RoomInfo">You are in room: <br />
-        <span className="RoomName">{room}</span></p>
       </div>
 
       <ul>
         {roomArray.map((room, index) => (
-          <Button type="primary" key={index} className="RoomButton"
+          <Button 
+          type="primary" 
+          key={index} 
+          className={`RoomButton ${selectedRoom === room ? 'SelectedRoomButton' : ''}`}
           onClick={() => joinRoom(room)}>
             {room}
           </Button>

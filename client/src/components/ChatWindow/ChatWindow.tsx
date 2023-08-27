@@ -11,6 +11,7 @@ export default function ChatWindow() {
 
   const {
     userJoined,
+    user,
     currentMessage,
     setCurrentMessage,
     messageList,
@@ -49,7 +50,7 @@ export default function ChatWindow() {
         {showAlert && (
           <Alert
             message={` ${userJoined} Joined Chat`}
-            type="success"
+            type="info"
             showIcon
             closable
           />
@@ -59,18 +60,24 @@ export default function ChatWindow() {
       {/*RENDER MESSAGES*/}
       {messageList.map((messageContent) => {
         const messageKey = `${messageContent.message}-${messageContent.time}`;
+      
           return (
-          <div className="Message" key={messageKey}>
+          <div 
+          className="Message"
+          key={messageKey}
+          id={user === messageContent.author ? "You" : "Other"}
+          >
+            <div className="MessageBox">
+              <div className="MessageContent">
+                <p>{messageContent.message}</p>
+              </div>
 
-            <div className="MessageContent">
-              <p>{messageContent.message}</p>
+              <div className="MessageMeta">
+                <p>{messageContent.time}</p>
+                <p className="Author">{messageContent.author}</p>
+              </div>
+              </div>
             </div>
-
-            <div className="MessageMeta">
-              <p>{messageContent.time}</p>
-              <p>{messageContent.author}</p>
-            </div>
-          </div>
           )
         })}
         </ScrollToBottom>

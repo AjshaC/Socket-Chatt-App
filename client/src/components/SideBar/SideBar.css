@@ -24,7 +24,7 @@ ul {
   border-radius: 16px;
   background-color: #0c1f51;
   padding: 5px 10px;
-  width: 90%;
+  width: 100%;
   color: whitesmoke;
 }
 
@@ -38,16 +38,18 @@ ul {
             inset 0 0 1.3rem #bc13fe; 
 }
 
+.SelectedRoomButton {
+  background-color: #bc13fe;
+}
+
 .ChatInLog{
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5em;
+  width: 80%;
 }
 
-.RoomInfo {
-  text-align: center;
-}
 
 .RoomName {
   font-size: larger;
