@@ -17,14 +17,12 @@ export default function Navbar() {
 
   return (
     <nav>
-      <h1 className="Logo">
-        <span className="LogoUppercase">chat</span> at eleven
-      </h1>
+      <h1 className="LogoNav"><span className="LogoNavUppercase">chat</span> at eleven</h1>
       <div className="NavBtn">
-        <Button type="primary">
+        {/*<Button type="primary">
           <UserOutlined />
           {user}
-        </Button>
+        </Button>*/}
         <OpenPopUpBtn />
 
         <Button type="primary" onClick={goToHome}>

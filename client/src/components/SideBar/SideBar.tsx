@@ -2,6 +2,7 @@ import "./SideBar.css";
 import { useState, useEffect } from "react";
 import { useChatContext } from "../../context/chatContext";
 import { Button} from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 
 export default function SideBar() {
@@ -28,13 +29,19 @@ export default function SideBar() {
 
   return (
     <div className="SideBar">
+
+      <div className="ChatInLog">
+        <p className="UserInfo"><UserOutlined /> {user}</p>
+        <p className="RoomInfo">You are in room: <br />
+        <span className="RoomName">{room}</span></p>
+      </div>
+
       <ul>
         {roomArray.map((room, index) => (
-          <Button key={index} 
+          <Button type="primary" key={index} className="RoomButton"
           onClick={() => joinRoom(room)}>
             {room}
           </Button>
-
         ))}
       </ul>
     </div>
