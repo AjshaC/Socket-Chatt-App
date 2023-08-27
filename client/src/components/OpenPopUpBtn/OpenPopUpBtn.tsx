@@ -9,6 +9,7 @@ export default function OpenPopUpBtn() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { room, setRoom } = useChatContext();
   const [newRoom, setNewRoom] = useState("");
+  const [errorInfo, setErrorInfo] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -16,6 +17,7 @@ export default function OpenPopUpBtn() {
 
   const handleOk = () => {
     if (!room.trim()) {
+      setErrorInfo("*Roomname is required")
       console.log("No Room Name");
     } else {
       setRoom(newRoom);
@@ -44,6 +46,7 @@ export default function OpenPopUpBtn() {
           onChange={(e) => setNewRoom(e.target.value)}
           placeholder="Room name"
         ></Input>
+        <p className="errorInfo">{errorInfo}</p>
       </Modal>
     </>
   );
