@@ -5,6 +5,7 @@ import { useChatContext } from "../../context/chatContext";
 import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import ScrollToBottom from "react-scroll-to-bottom";
+import TypingIndicator from "../TypingIndicator/TypingIndicator";
 
 export default function ChatWindow() {
 
@@ -14,7 +15,6 @@ export default function ChatWindow() {
     setCurrentMessage,
     messageList,
     sendMessage,
-    isTyping,
   } = useChatContext();
 
   
@@ -38,7 +38,7 @@ export default function ChatWindow() {
    
     <div className="ChatHeader">
       {/*TYPING INDICATOR*/}
-      {isTyping && <p>{isTyping} is typing ...</p>}
+      <TypingIndicator />
     </div>
   
     <div className="ChatBody">

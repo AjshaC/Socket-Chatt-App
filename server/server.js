@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
     console.log(`User ${user} disconnect from room: ${room}`)
 
     if (room && room !== "Lobby" ) {
-      //if index .....
+ 
       const index = availableRooms.indexOf(room);
       if (index !== -1) {
           availableRooms.splice(index, 1);

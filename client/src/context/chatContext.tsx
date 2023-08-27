@@ -142,8 +142,7 @@ useEffect(() =>
     });
 
     socket.on("typingResponse", (data) => {
-      setIsTyping(data);
-      console.log(data, "is typing ...")
+        setIsTyping(data);
     }); 
 
     socket.on("sendMessage", (data) => {

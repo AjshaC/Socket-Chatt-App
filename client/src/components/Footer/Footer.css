@@ -1,5 +1,8 @@
 .footer {
     color: whitesmoke;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 14px;
+    height: 3rem;
 }

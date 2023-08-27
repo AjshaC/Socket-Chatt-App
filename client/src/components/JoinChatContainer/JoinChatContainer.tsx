@@ -57,8 +57,8 @@ export default function JoinChatContainer() {
         </Space.Compact>
 
         <p className="errorInfo">{errorInfo}</p>
-
       </Card>
+
     </>
   );
 }
