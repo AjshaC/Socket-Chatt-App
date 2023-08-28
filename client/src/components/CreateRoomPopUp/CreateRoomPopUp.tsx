@@ -14,15 +14,32 @@ export default function CreateRoomPopUp() {
   };
 
   const handleOk = () => {
-    if (!room.trim()) {
-      setErrorInfo("*Roomname is required")
-      console.log("No Room Name");
+    if (!newRoom) {
+      setErrorInfo("*Roomname is required");
+
+      setTimeout(() => {
+        setErrorInfo("");
+      }, 5000);
+    } else if (newRoom === room) {
+      setErrorInfo("*Roomname already exists");
+
+      setTimeout(() => {
+        setErrorInfo("");
+      }, 5000);
     } else {
-      setRoom(newRoom);
-      setNewRoom("");
+      // Leave the current room, join the new room, and reset state
+
       socket.emit("leave_room", room);
+
       socket.emit("join_room", newRoom);
+
+      setRoom(newRoom);
+
       setIsModalOpen(false);
+
+      setNewRoom("");
+
+      setErrorInfo("");
     }
   };
 
