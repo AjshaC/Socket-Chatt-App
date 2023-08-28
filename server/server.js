@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
 
   //SEND MESSAGE
   socket.on("send_message", (message) => {
-    socket.to(message.room).emit("receive_message", message); //PROBLEM ATT FÅ UT MEDDELANDENA RÄTT NÄR MAN HOPPAR MELLAN RUM
+    socket.to(message.room).emit("receive_message", message);
     console.log(message);
   });
 

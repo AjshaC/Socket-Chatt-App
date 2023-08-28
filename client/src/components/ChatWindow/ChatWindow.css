@@ -1,7 +1,10 @@
 .ChatWindow {
   width: 80vw;
-  height: 100vh;
+  height: 80vh;
   padding: 1rem;
+  margin: auto;
+  margin-top: 2rem;
+  position: relative;
 }
 
 .CHatWindow p {
@@ -11,9 +14,14 @@
 .ChatWindow .ChatHeader {
   height: 45px;
   border-radius: 6px;
-  background: #0c1f51;
   position: relative;
   cursor: pointer;
+  background: rgb(24, 26, 43);
+  background: linear-gradient(
+    0deg,
+    rgba(24, 26, 43, 1) 0%,
+    rgba(10, 10, 19, 1) 35%
+  );
 }
 
 .ChatWindow .ChatHeader p {
@@ -23,9 +31,10 @@
   margin: 1rem;
 }
 
-.CHatWindow .ChatBody {
-  border: 1px solid #263238;
+.ChatWindow .ChatBody {
+  height: 65vh;
   position: relative;
+  background: #0c1f51;
 }
 
 .UserJoined {
@@ -128,7 +137,7 @@
 .SendInput {
   border-radius: 0px;
   background: #0c2042;
-  border: none;
+  border: 1px solid cornflowerblue;
   color: whitesmoke;
 }
 
@@ -137,5 +146,6 @@
 }
 
 .SendBtn {
+  border: 1px solid cornflowerblue;
   border-radius: 0px 16px 16px 0px;
 }

@@ -4,8 +4,8 @@ import { Alert } from "antd";
 import { useChatContext } from "../../context/chatContext";
 import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
-import ScrollToBottom from "react-scroll-to-bottom";
 import TypingIndicator from "../TypingIndicator/TypingIndicator";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 export default function ChatWindow() {
 
@@ -18,21 +18,19 @@ export default function ChatWindow() {
     sendMessage,
   } = useChatContext();
 
-  
   //SHOW THAT A NEW USER JOIN CHAT
   const [showAlert, setShowAlert] = useState(false);
-
+  
   useEffect(() => {
     if (userJoined) {
       setShowAlert(true);
       const timeout = setTimeout(() => {
         setShowAlert(false);
-      }, 5000); // Hide after 10 seconds
+      }, 5000);
       return () => clearTimeout(timeout);
     }
   }, [userJoined]);
 
-  
   return (
 
   <div className="ChatWindow">
@@ -43,7 +41,7 @@ export default function ChatWindow() {
     </div>
   
     <div className="ChatBody">
-      <ScrollToBottom className="MessageContainer">
+      
 
       {/*SHOW WHEN A NEW USER JOIN CHAT*/}
       <div className="UserJoined">
@@ -55,7 +53,8 @@ export default function ChatWindow() {
           />
         )}
       </div>
-      
+
+      <ScrollToBottom className="MessageContainer">
       {/*RENDER MESSAGES*/}
       {messageList.map((messageContent) => {
         const messageKey = `${messageContent.message}-${messageContent.time}`;
