@@ -26,7 +26,7 @@ export default function ChatWindow() {
       setShowAlert(true);
       const timeout = setTimeout(() => {
         setShowAlert(false);
-      }, 5000); // Hide after 10 seconds
+      }, 5000);
       return () => clearTimeout(timeout);
     }
   }, [userJoined]);
