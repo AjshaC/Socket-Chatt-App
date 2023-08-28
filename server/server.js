@@ -13,59 +13,56 @@ const io = new Server(server, {
   },
 });
 
-let availableRooms = []
-
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
   console.log("New user connected: ", socket.id);
-
 
   //SAVE USERNAME
   const user = socket.handshake.auth.user;
   console.log("Logged in with Username: ", user);
 
-
   //ROOMLIST
   const rooms = io.sockets.adapter.rooms;
-
 
   //ROOM
   socket.on("join_room", (newRoom) => {
     socket.join(newRoom);
     socket.to(newRoom).emit("userJoined", user);
-    console.log(`User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`);
+    console.log(
+      `User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`
+    );
 
     console.log("ROOMS", rooms);
 
-    handleRooms()
+    const availableRooms = handleRooms();
 
     io.emit("room_array", availableRooms);
   });
 
+  socket.on(
+    "leave_room",
+    (room) => {
+      socket.leave(room);
+      console.log(`User ${user} disconnect from room: ${room}`);
 
-  socket.on("leave_room", (room) => {
+      // if (room && room !== "Lobby") {
+      //   const index = availableRooms.indexOf(room);
+      //   if (index !== -1) {
+      //     availableRooms.splice(index, 1);
+      //   }
+      //   console.log("UPDATED ROOMLIST AFTER DELETE: ", availableRooms);
+      const availableRooms = handleRooms();
 
-    socket.leave(room);
-    console.log(`User ${user} disconnect from room: ${room}`)
-
-    if (room && room !== "Lobby" ) {
- 
-      const index = availableRooms.indexOf(room);
-      if (index !== -1) {
-          availableRooms.splice(index, 1);
-        }
-      console.log("UPDATED ROOMLIST AFTER DELETE: ", availableRooms);
       io.emit("room_array", availableRooms);
     }
-  });
-
+    // });
+  );
 
   //TYPING
   socket.on("typing", (data, room) => {
-      socket.to(room).emit('typingResponse', data);
+    socket.to(room).emit("typingResponse", data);
   });
 
-  
   //SEND MESSAGE
   socket.on("send_message", (message) => {
     socket.to(message.room).emit("receive_message", message); //PROBLEM ATT FÅ UT MEDDELANDENA RÄTT NÄR MAN HOPPAR MELLAN RUM
@@ -74,28 +71,43 @@ io.on("connection", (socket) => {
 
   //DISCONNECT
   socket.on("disconnect", () => {
-    console.log("User Disconnected: ", socket.id)
-    socket.emit("room_array", availableRooms);
-  })
+    console.log("User Disconnected: ", socket.id);
+    //jämför med listan
+    //disconnect VS disconnecting
+    //använd function handlerooms
+    const availableRooms = handleRooms();
 
+    io.emit("room_array", availableRooms);
+  });
 });
 
-
- //ÄVEN LOGIK FÖR USER HÄR OM VI HINNER MED VG-DELEN
- function handleRooms() {
+//ÄVEN LOGIK FÖR USER HÄR OM VI HINNER MED VG-DELEN
+//Users: hur ska data se ut []
+//få till objekt, varje objekt har roomsname och array med users
+//sista steg: id till username
+function handleRooms() {
+  let availableRooms = [];
 
   const rooms = io.sockets.adapter.rooms;
+  console.log(io.sockets.adapter.rooms);
 
   //Loop over the Map items where key and value are not the same
   for (const [key, value] of rooms) {
-    if (key !== value && !(value.size === 1 && value.has(key)) && !availableRooms.includes(key)) {
+    if (
+      key !== value &&
+      !(value.size === 1 && value.has(key)) &&
+      !availableRooms.includes(key)
+    ) {
       availableRooms.push(key);
     }
   }
 
   console.log("UPDATED ROOMLIST AFTER PUSH: ", availableRooms);
+  //Här kollar vi om lobbyn finns, annars lägger vi till den
+  if (!availableRooms.includes("Lobby")) {
+    availableRooms.push("Lobby");
+  }
   return availableRooms;
-};
-
+}
 
 server.listen(3000, () => console.log("server is up"));
