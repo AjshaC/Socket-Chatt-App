@@ -19,7 +19,7 @@ export default function ChatWindow() {
   } = useChatContext();
 
 
-  //FetchGif
+  //FetchGifs
 
   const useGif = async ()  => {
     const  response= await fetch( `https://api.giphy.com/v1/stickers/random?api_key=${import.meta.env.VITE_API_KEY}&tag=&rating=g`);
