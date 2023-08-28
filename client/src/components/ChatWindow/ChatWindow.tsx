@@ -52,7 +52,6 @@ export default function ChatWindow() {
             message={` ${userJoined} Joined Chat`}
             type="info"
             showIcon
-            closable
           />
         )}
       </div>

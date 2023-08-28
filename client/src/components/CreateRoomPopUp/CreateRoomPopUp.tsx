@@ -5,7 +5,7 @@ import { useChatContext } from "../../context/chatContext";
 
 export default function CreateRoomPopUp() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { room, setRoom } = useChatContext();
+  const { socket, room, setRoom } = useChatContext();
   const [newRoom, setNewRoom] = useState("");
   const [errorInfo, setErrorInfo] = useState("");
 
@@ -20,11 +20,12 @@ export default function CreateRoomPopUp() {
     } else {
       setRoom(newRoom);
       setNewRoom("");
+      socket.emit("leave_room", room);
+      socket.emit("join_room", newRoom);
       setIsModalOpen(false);
     }
   };
 
-  
   const handleCancel = () => {
     setIsModalOpen(false);
   };

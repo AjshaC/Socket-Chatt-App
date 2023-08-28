@@ -2,7 +2,7 @@ import "./SideBar.css";
 import { useState, useEffect } from "react";
 import { useChatContext } from "../../context/chatContext";
 import { Button} from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 
 export default function SideBar() {
@@ -34,6 +34,7 @@ export default function SideBar() {
 
       <div className="ChatInLog">
         <p className="UserInfo"><UserOutlined /> {user}</p>
+        <p className="RoomInfo"><ArrowRightOutlined /> {room}</p>
       </div>
 
       <ul>

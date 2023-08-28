@@ -75,6 +75,7 @@ io.on("connection", (socket) => {
   //DISCONNECT
   socket.on("disconnect", () => {
     console.log("User Disconnected: ", socket.id)
+    socket.emit("room_array", availableRooms);
   })
 
 });

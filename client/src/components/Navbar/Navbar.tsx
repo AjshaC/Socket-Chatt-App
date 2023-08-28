@@ -18,10 +18,7 @@ export default function Navbar() {
     <nav>
       <h1 className="LogoNav"><span className="LogoNavUppercase">chat</span> at eleven</h1>
       <div className="NavBtn">
-        {/*<Button type="primary">
-          <UserOutlined />
-          {user}
-        </Button>*/}
+    
         <CreateRoomPopUp />
 
         <Button type="primary" onClick={goToHome}>
