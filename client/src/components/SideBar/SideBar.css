@@ -36,10 +36,11 @@ ul {
             0 0 0.4rem #bc13fe,
             0 0 1.4rem #bc13fe,
             inset 0 0 1.3rem #bc13fe; 
+  background-color: inherit !important;
 }
 
 .SelectedRoomButton {
-  background-color: #bc13fe;
+  background-color:  #9880ff;
 }
 
 .ChatInLog{

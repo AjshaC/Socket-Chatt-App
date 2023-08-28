@@ -96,7 +96,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
 
 useEffect(() => 
-{ if (currentMessage.length < 1) 
+{ if (currentMessage.length === 0) 
   { setIsTyping(false); } 
   else 
   { setIsTyping(true);} 
@@ -131,11 +131,11 @@ useEffect(() =>
   //SOCKET
   useEffect(() => {
     socket.on("userJoined", (data) => {
-      setUserJoined(data);
+    setUserJoined(data);
     });
 
     socket.on("typingResponse", (data) => {
-        setIsTyping(data);
+      setIsTyping(data);
     }); 
 
     socket.on("sendMessage", (data) => {
@@ -146,9 +146,9 @@ useEffect(() =>
       setMessageList((list) => [...list, message]);
     });
 
-    /*socket.on("leaveRoom", (data) => {
+    socket.on("leave_room", (data) => {
       console.log("Disconnected from room: ", data)
-    });*/
+    });
 
     return () => {
       socket.disconnect();
@@ -158,7 +158,6 @@ useEffect(() =>
   
   useEffect(() => {
     socket.on("room_array", (roomArray: Room[]) => {
-      console.log("Received room list from server", roomArray);
       setRoomList(roomArray);
     });
   }, []);
