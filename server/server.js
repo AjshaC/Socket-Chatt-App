@@ -32,17 +32,19 @@ io.on("connection", (socket) => {
       `User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`
     );
 
-    const availableRooms = handleRooms();
+    const {availableRooms, usersInRoom} = handleRooms();
 
     io.emit("room_array", availableRooms);
+    io.emit("users_in_room", usersInRoom); 
   });
 
   socket.on("leave_room", (room) => {
     socket.leave(room);
     console.log(`User ${user} disconnect from room: ${room}`);
-    const availableRooms = handleRooms();
+    const {availableRooms, usersInRoom} = handleRooms();
 
     io.emit("room_array", availableRooms);
+    io.emit("users_in_room", usersInRoom);
   });
 
   //TYPING
@@ -59,8 +61,9 @@ io.on("connection", (socket) => {
   //DISCONNECT
   socket.on("disconnect", () => {
     console.log("User Disconnected: ", socket.id);
-    const availableRooms = handleRooms();
+    const {availableRooms, usersInRoom} = handleRooms();
 
+    io.emit("users_in_room", usersInRoom); 
     io.emit("room_array", availableRooms);
   });
 });
@@ -106,7 +109,7 @@ function handleRooms() {
     availableRooms.push("Lobby");
   }
 
-  return availableRooms
+  return {availableRooms, usersInRoom}
 
 }
 
