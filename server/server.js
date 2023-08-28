@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
     console.log(`User ${user} disconnect from room: ${room}`)
 
     if (room && room !== "Lobby" ) {
-      //if index .....
+ 
       const index = availableRooms.indexOf(room);
       if (index !== -1) {
           availableRooms.splice(index, 1);
@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
 
   //TYPING
   socket.on("typing", (data, room) => {
-    socket.to(room).emit('typingResponse', data);
+      socket.to(room).emit('typingResponse', data);
   });
 
   
@@ -75,6 +75,7 @@ io.on("connection", (socket) => {
   //DISCONNECT
   socket.on("disconnect", () => {
     console.log("User Disconnected: ", socket.id)
+    socket.emit("room_array", availableRooms);
   })
 
 });

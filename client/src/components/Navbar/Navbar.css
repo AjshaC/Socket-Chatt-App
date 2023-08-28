@@ -15,24 +15,31 @@ nav {
   );
 }
 
-.Logo {
+.LogoNav {
+  margin-left: 2rem;
+  color: #fff;
   font-family: "Sacramento", cursive;
-  color: aliceblue;
-  text-shadow: 1px 1px 2px midnightblue;
-  font-size: 5%;
+  font-size: 2rem;
+  font-weight: 400;
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #bc13fe,
+    0 0 82px #bc13fe,
+    0 0 92px #bc13fe,
+    0 0 102px #bc13fe,
+    0 0 151px #bc13fe;
 }
 
-.LogoUppercase {
+.LogoNavUppercase {
   font-family: "Lumanosimo", cursive;
   text-transform: uppercase;
-  font-size: 32px;
+  font-size: 3rem;
 }
 
 .NavBtn {
   display: flex;
   gap: 10px;
-}
-
-.CloseBtn {
-  border-radius: 16px;
+  margin-right: 2rem;
 }

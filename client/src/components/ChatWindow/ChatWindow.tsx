@@ -5,16 +5,17 @@ import { useChatContext } from "../../context/chatContext";
 import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import ScrollToBottom from "react-scroll-to-bottom";
+import TypingIndicator from "../TypingIndicator/TypingIndicator";
 
 export default function ChatWindow() {
 
   const {
     userJoined,
+    user,
     currentMessage,
     setCurrentMessage,
     messageList,
     sendMessage,
-    isTyping,
   } = useChatContext();
 
   
@@ -38,7 +39,7 @@ export default function ChatWindow() {
    
     <div className="ChatHeader">
       {/*TYPING INDICATOR*/}
-      {isTyping && <p>{isTyping} is typing ...</p>}
+      <TypingIndicator />
     </div>
   
     <div className="ChatBody">
@@ -49,9 +50,8 @@ export default function ChatWindow() {
         {showAlert && (
           <Alert
             message={` ${userJoined} Joined Chat`}
-            type="success"
+            type="info"
             showIcon
-            closable
           />
         )}
       </div>
@@ -59,23 +59,30 @@ export default function ChatWindow() {
       {/*RENDER MESSAGES*/}
       {messageList.map((messageContent) => {
         const messageKey = `${messageContent.message}-${messageContent.time}`;
+      
           return (
-          <div className="Message" key={messageKey}>
+          <div 
+          className="Message"
+          key={messageKey}
+          id={user === messageContent.author ? "You" : "Other"}
+          >
+            <div className="MessageBox">
+              <div className="MessageContent">
+                <p>{messageContent.message}</p>
+              </div>
 
-            <div className="MessageContent">
-              <p>{messageContent.message}</p>
+              <div className="MessageMeta">
+                <p>{messageContent.time}</p>
+                <p className="Author">{messageContent.author}</p>
+              </div>
+              </div>
             </div>
-
-            <div className="MessageMeta">
-              <p>{messageContent.time}</p>
-              <p>{messageContent.author}</p>
-            </div>
-          </div>
           )
         })}
         </ScrollToBottom>
       </div>
 
+      {/*INPUT FOR WRITE AND SEND MESSAGES*/}
       <div className="ChatFooter">
         <Input
           className="SendInput" 

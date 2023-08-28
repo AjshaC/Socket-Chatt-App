@@ -39,7 +39,6 @@ interface IChatContext {
   setRoomList: Dispatch<SetStateAction<Room[]>>;
   isTyping: boolean;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
-  //whenTyping: () => void;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -62,7 +61,6 @@ const defaultValues = {
   setRoomList: () => {},
   isTyping: false,
   setIsTyping: () => {},
-  //whenTyping: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -78,11 +76,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [roomList, setRoomList] = useState<Room[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-
-  /*const connectToTheServer = (user:string) =>{
-       socket.connect();                 
-       socket.emit('join', user , "lobby")
-  }*/
 
 
   //CONNECT TO SERVER
@@ -103,7 +96,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
 
 
 useEffect(() => 
-{ if (currentMessage.length < 1) 
+{ if (currentMessage.length === 0) 
   { setIsTyping(false); } 
   else 
   { setIsTyping(true);} 
@@ -138,12 +131,11 @@ useEffect(() =>
   //SOCKET
   useEffect(() => {
     socket.on("userJoined", (data) => {
-      setUserJoined(data);
+    setUserJoined(data);
     });
 
     socket.on("typingResponse", (data) => {
       setIsTyping(data);
-      console.log(data, "is typing ...")
     }); 
 
     socket.on("sendMessage", (data) => {
@@ -154,9 +146,9 @@ useEffect(() =>
       setMessageList((list) => [...list, message]);
     });
 
-    /*socket.on("leaveRoom", (data) => {
+    socket.on("leave_room", (data) => {
       console.log("Disconnected from room: ", data)
-    });*/
+    });
 
     return () => {
       socket.disconnect();
@@ -166,7 +158,6 @@ useEffect(() =>
   
   useEffect(() => {
     socket.on("room_array", (roomArray: Room[]) => {
-      console.log("Received room list from server", roomArray);
       setRoomList(roomArray);
     });
   }, []);

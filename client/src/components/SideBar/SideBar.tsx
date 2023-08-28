@@ -2,12 +2,14 @@ import "./SideBar.css";
 import { useState, useEffect } from "react";
 import { useChatContext } from "../../context/chatContext";
 import { Button} from "antd";
+import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 
 export default function SideBar() {
   const { socket, user, room, setRoom } = useChatContext();
 
   const [roomArray, setRoomArray] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState("");
 
   useEffect(() => {
     socket.emit("get_room_array"); // Request roomArray from server
@@ -23,18 +25,27 @@ export default function SideBar() {
     }
     socket.emit("join_room", newRoom);
     setRoom(newRoom);
+    setSelectedRoom(newRoom);
   };
 
 
   return (
     <div className="SideBar">
+
+      <div className="ChatInLog">
+        <p className="UserInfo"><UserOutlined /> {user}</p>
+        <p className="RoomInfo"><ArrowRightOutlined /> {room}</p>
+      </div>
+
       <ul>
         {roomArray.map((room, index) => (
-          <Button key={index} 
+          <Button 
+          type="primary" 
+          key={index} 
+          className={`RoomButton ${selectedRoom === room ? 'SelectedRoomButton' : ''}`}
           onClick={() => joinRoom(room)}>
             {room}
           </Button>
-
         ))}
       </ul>
     </div>
