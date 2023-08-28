@@ -39,24 +39,13 @@ io.on("connection", (socket) => {
     io.emit("room_array", availableRooms);
   });
 
-  socket.on(
-    "leave_room",
-    (room) => {
-      socket.leave(room);
-      console.log(`User ${user} disconnect from room: ${room}`);
+  socket.on("leave_room", (room) => {
+    socket.leave(room);
+    console.log(`User ${user} disconnect from room: ${room}`);
+    const availableRooms = handleRooms();
 
-      // if (room && room !== "Lobby") {
-      //   const index = availableRooms.indexOf(room);
-      //   if (index !== -1) {
-      //     availableRooms.splice(index, 1);
-      //   }
-      //   console.log("UPDATED ROOMLIST AFTER DELETE: ", availableRooms);
-      const availableRooms = handleRooms();
-
-      io.emit("room_array", availableRooms);
-    }
-    // });
-  );
+    io.emit("room_array", availableRooms);
+  });
 
   //TYPING
   socket.on("typing", (data, room) => {
@@ -72,9 +61,6 @@ io.on("connection", (socket) => {
   //DISCONNECT
   socket.on("disconnect", () => {
     console.log("User Disconnected: ", socket.id);
-    //jämför med listan
-    //disconnect VS disconnecting
-    //använd function handlerooms
     const availableRooms = handleRooms();
 
     io.emit("room_array", availableRooms);
