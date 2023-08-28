@@ -68,11 +68,10 @@ io.on("connection", (socket) => {
 });
 
 //ÄVEN LOGIK FÖR USER HÄR OM VI HINNER MED VG-DELEN
-//Users: hur ska data se ut []
-//få till objekt, varje objekt har roomsname och array med users
-//sista steg: id till username
+
 function handleRooms() {
   let availableRooms = [];
+  let usersInRoom = [];
 
   const rooms = io.sockets.adapter.rooms;
   console.log(io.sockets.adapter.rooms);
@@ -85,10 +84,24 @@ function handleRooms() {
       !availableRooms.includes(key)
     ) {
       availableRooms.push(key);
+      const userList = Array.from(value);
+      usersInRoom.push({
+        roomName: key,
+        users: userList,
+      });
     }
   }
 
+  //     const userList = Array.from(room);
+  //     const usersWithUsernames = userList.map((userId) => ({
+  //       roomName: roomName,
+  //       username: io.sockets.connected[userId].handshake.auth.user, // Get the username using the userId
+  //     }));
+  //     usersInRoom.push(...usersWithUsernames);
+  //   }
+
   console.log("UPDATED ROOMLIST AFTER PUSH: ", availableRooms);
+  console.log("THIS IS OUR ARRAY WITH ROOMSNAMES AND USERS ", usersInRoom);
   //Här kollar vi om lobbyn finns, annars lägger vi till den
   if (!availableRooms.includes("Lobby")) {
     availableRooms.push("Lobby");
