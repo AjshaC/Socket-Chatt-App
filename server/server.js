@@ -32,16 +32,16 @@ io.on("connection", (socket) => {
       `User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`
     );
 
-    const {availableRooms, usersInRoom} = handleRooms();
+    const { availableRooms, usersInRoom } = handleRooms();
 
     io.emit("room_array", availableRooms);
-    io.emit("users_in_room", usersInRoom); 
+    io.emit("users_in_room", usersInRoom);
   });
 
   socket.on("leave_room", (room) => {
     socket.leave(room);
     console.log(`User ${user} disconnect from room: ${room}`);
-    const {availableRooms, usersInRoom} = handleRooms();
+    const { availableRooms, usersInRoom } = handleRooms();
 
     io.emit("room_array", availableRooms);
     io.emit("users_in_room", usersInRoom);
@@ -61,9 +61,9 @@ io.on("connection", (socket) => {
   //DISCONNECT
   socket.on("disconnect", () => {
     console.log("User Disconnected: ", socket.id);
-    const {availableRooms, usersInRoom} = handleRooms();
+    const { availableRooms, usersInRoom } = handleRooms();
 
-    io.emit("users_in_room", usersInRoom); 
+    io.emit("users_in_room", usersInRoom);
     io.emit("room_array", availableRooms);
   });
 });
@@ -76,7 +76,6 @@ function handleRooms() {
 
   const rooms = io.sockets.adapter.rooms;
   console.log("INBYGGDA LISTAN: ", io.sockets.adapter.rooms);
-
   //Loop over the Map items where key and value are not the same
   for (const [key, value] of rooms) {
     if (
@@ -88,10 +87,9 @@ function handleRooms() {
 
       const userList = Array.from(value);
       usersInRoom.push({
-       roomName: key,
-       users: userList,
+        roomName: key,
+        users: userList,
       });
-
 
       const clients = io.sockets.adapter.rooms.get(key);
 
@@ -99,8 +97,7 @@ function handleRooms() {
       const numClients = clients ? clients.size : 0;
       console.log("CLIENTS: ", clients);
       console.log("NUMBER CLIENTS: ", numClients);
-  }
-
+    }
   }
   console.log("UPDATED ROOMLIST: ", availableRooms);
 
@@ -109,8 +106,7 @@ function handleRooms() {
     availableRooms.push("Lobby");
   }
 
-  return {availableRooms, usersInRoom}
-
+  return { availableRooms, usersInRoom };
 }
 
 server.listen(3000, () => console.log("server is up"));

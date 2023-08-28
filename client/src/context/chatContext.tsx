@@ -20,7 +20,6 @@ interface Room {
   name: string;
 }
 
-
 interface IChatContext {
   socket: Socket;
   user: string;
@@ -77,7 +76,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [roomList, setRoomList] = useState<Room[]>([]);
   const [isTyping, setIsTyping] = useState(false);
 
-
   //CONNECT TO SERVER
   const connectToTheServer = () => {
     socket.connect();
@@ -86,7 +84,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     setRoom("Lobby");
   };
 
-
   //ROOM
   useEffect(() => {
     if (room) {
@@ -94,49 +91,45 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     }
   }, [room]);
 
-
-useEffect(() => 
-{ if (currentMessage.length === 0) 
-  { setIsTyping(false); } 
-  else 
-  { setIsTyping(true);} 
-  socket.emit('typing', user, room)
-}, [currentMessage]);
-
-
+  useEffect(() => {
+    if (currentMessage.length === 0) {
+      setIsTyping(false);
+    } else {
+      setIsTyping(true);
+    }
+    socket.emit("typing", user, room);
+  }, [currentMessage]);
 
   //SEND MESSAGE
   const sendMessage = () => {
-
     if (currentMessage !== "") {
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes();
       const formattedMinutes = (minutes < 10 ? "0" : "") + minutes;
 
-    const messageData = {
-      room: room,
-      author: user,
-      message: currentMessage,
-      time: hours + ":" + formattedMinutes,
-    };
+      const messageData = {
+        room: room,
+        author: user,
+        message: currentMessage,
+        time: hours + ":" + formattedMinutes,
+      };
 
-    socket.emit("send_message", messageData);
-    setMessageList((list) => [...list, messageData]);
-    setCurrentMessage("");
-  }
-};
-
+      socket.emit("send_message", messageData);
+      setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
+    }
+  };
 
   //SOCKET
   useEffect(() => {
     socket.on("userJoined", (data) => {
-    setUserJoined(data);
+      setUserJoined(data);
     });
 
     socket.on("typingResponse", (data) => {
       setIsTyping(data);
-    }); 
+    });
 
     socket.on("sendMessage", (data) => {
       setCurrentMessage(data);
@@ -147,7 +140,7 @@ useEffect(() =>
     });
 
     socket.on("leave_room", (data) => {
-      console.log("Disconnected from room: ", data)
+      console.log("Disconnected from room: ", data);
     });
 
     return () => {
@@ -155,13 +148,16 @@ useEffect(() =>
     };
   }, [socket]);
 
-  
   useEffect(() => {
     socket.on("room_array", (roomArray: Room[]) => {
       setRoomList(roomArray);
     });
   }, []);
 
+  // Reset messageList when room changes
+  useEffect(() => {
+    setMessageList([]);
+  }, [room]);
 
   return (
     <ChatContext.Provider
