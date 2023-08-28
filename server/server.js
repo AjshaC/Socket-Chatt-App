@@ -32,8 +32,6 @@ io.on("connection", (socket) => {
       `User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`
     );
 
-    console.log("ROOMS", rooms);
-
     const availableRooms = handleRooms();
 
     io.emit("room_array", availableRooms);
@@ -74,7 +72,7 @@ function handleRooms() {
   let usersInRoom = [];
 
   const rooms = io.sockets.adapter.rooms;
-  console.log(io.sockets.adapter.rooms);
+  console.log("INBYGGDA LISTAN: ", io.sockets.adapter.rooms);
 
   //Loop over the Map items where key and value are not the same
   for (const [key, value] of rooms) {
@@ -84,29 +82,32 @@ function handleRooms() {
       !availableRooms.includes(key)
     ) {
       availableRooms.push(key);
+
       const userList = Array.from(value);
       usersInRoom.push({
-        roomName: key,
-        users: userList,
+       roomName: key,
+       users: userList,
       });
-    }
+
+
+      const clients = io.sockets.adapter.rooms.get(key);
+
+      //to get the number of clients in this room
+      const numClients = clients ? clients.size : 0;
+      console.log("CLIENTS: ", clients);
+      console.log("NUMBER CLIENTS: ", numClients);
   }
 
-  //     const userList = Array.from(room);
-  //     const usersWithUsernames = userList.map((userId) => ({
-  //       roomName: roomName,
-  //       username: io.sockets.connected[userId].handshake.auth.user, // Get the username using the userId
-  //     }));
-  //     usersInRoom.push(...usersWithUsernames);
-  //   }
+  }
+  console.log("UPDATED ROOMLIST: ", availableRooms);
 
-  console.log("UPDATED ROOMLIST AFTER PUSH: ", availableRooms);
-  console.log("THIS IS OUR ARRAY WITH ROOMSNAMES AND USERS ", usersInRoom);
-  //Här kollar vi om lobbyn finns, annars lägger vi till den
+  //Check if Lobby are in the roomlist
   if (!availableRooms.includes("Lobby")) {
     availableRooms.push("Lobby");
   }
-  return availableRooms;
+
+  return availableRooms
+
 }
 
 server.listen(3000, () => console.log("server is up"));
