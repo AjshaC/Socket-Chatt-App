@@ -13,6 +13,9 @@ const io = new Server(server, {
   },
 });
 
+//Final array of users in each room that we send to client side:
+let newUser = [];
+
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
   console.log("New user connected: ", socket.id);
@@ -21,10 +24,7 @@ io.on("connection", (socket) => {
   const user = socket.handshake.auth.user;
   console.log("Logged in with Username: ", user);
 
-  //ROOMLIST
-  const rooms = io.sockets.adapter.rooms;
-
-  //ROOM
+  //JOIN ROOM
   socket.on("join_room", (newRoom) => {
     socket.join(newRoom);
     socket.to(newRoom).emit("userJoined", user);
@@ -32,19 +32,26 @@ io.on("connection", (socket) => {
       `User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`
     );
 
-    console.log("ROOMS", rooms);
+    //NEW USER CONTAINS ID AND USERNAME
+    const newUserInfo = {
+      id: socket.id,
+      username: user,
+    };
+    newUser.push(newUserInfo);
 
-    const availableRooms = handleRooms();
+    const { availableRooms, usersInRoom } = handleRooms();
 
     io.emit("room_array", availableRooms);
+    io.emit("users_in_room", usersInRoom);
   });
 
+  //LEAVE ROOM
   socket.on("leave_room", (room) => {
     socket.leave(room);
     console.log(`User ${user} disconnect from room: ${room}`);
-    const availableRooms = handleRooms();
-
+    const { availableRooms, usersInRoom } = handleRooms();
     io.emit("room_array", availableRooms);
+    io.emit("users_in_room", usersInRoom);
   });
 
   //TYPING
@@ -54,46 +61,62 @@ io.on("connection", (socket) => {
 
   //SEND MESSAGE
   socket.on("send_message", (message) => {
-    socket.to(message.room).emit("receive_message", message); //PROBLEM ATT FÅ UT MEDDELANDENA RÄTT NÄR MAN HOPPAR MELLAN RUM
+    socket.to(message.room).emit("receive_message", message);
     console.log(message);
   });
 
   //DISCONNECT
   socket.on("disconnect", () => {
     console.log("User Disconnected: ", socket.id);
-    const availableRooms = handleRooms();
-
+    const { availableRooms, usersInRoom } = handleRooms();
+    io.emit("users_in_room", usersInRoom);
     io.emit("room_array", availableRooms);
   });
 });
 
-//ÄVEN LOGIK FÖR USER HÄR OM VI HINNER MED VG-DELEN
-//Users: hur ska data se ut []
-//få till objekt, varje objekt har roomsname och array med users
-//sista steg: id till username
+//FUNCTION THAT HANDLES ROOMLIST AND USERLIST
 function handleRooms() {
   let availableRooms = [];
+  let usersInRoom = [];
 
+  //OBTAIN ARRAY OF ROOMS
   const rooms = io.sockets.adapter.rooms;
-  console.log(io.sockets.adapter.rooms);
+  console.log("INBYGGDA LISTAN: ", io.sockets.adapter.rooms);
 
-  //Loop over the Map items where key and value are not the same
+  //Loop over the Map items where key and value are not the same (to remove id from roomlist)
   for (const [key, value] of rooms) {
     if (
       key !== value &&
       !(value.size === 1 && value.has(key)) &&
       !availableRooms.includes(key)
     ) {
-      availableRooms.push(key);
+      availableRooms.push(key); //ADD ROOM TO ROOMLIST
+
+      //CREATE ARRAY OF USERS IDs FROM SOCKET ADAPTER
+      const usersIdArray = Array.from(value);
+
+      // CONVERT IDS TO USERNAMES
+      const usernamesArray = usersIdArray.map((userId) => {
+        const foundUser = newUser.find((user) => user.id === userId);
+        return foundUser ? foundUser.username : userId;
+      });
+
+      //ADD ID ARRAY TO USERS IN ROOM
+      usersInRoom.push({
+        roomName: key,
+        usernames: usernamesArray,
+      });
+
+      console.log("LOG -- USERS IN ROOM: ", usersInRoom);
     }
   }
 
-  console.log("UPDATED ROOMLIST AFTER PUSH: ", availableRooms);
-  //Här kollar vi om lobbyn finns, annars lägger vi till den
+  //CHECK IF LOBBY IS IN ROOMLIST, OTHERWISE ADD IT
   if (!availableRooms.includes("Lobby")) {
     availableRooms.push("Lobby");
   }
-  return availableRooms;
+
+  return { availableRooms, usersInRoom };
 }
 
 server.listen(3000, () => console.log("server is up"));
