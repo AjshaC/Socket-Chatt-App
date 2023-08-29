@@ -92,13 +92,20 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [room]);
 
   useEffect(() => {
-    if (currentMessage.length === 0) {
-      setIsTyping(false);
-    } else {
+    if (currentMessage.length >= 1) {
       setIsTyping(true);
+    } else {
+      setIsTyping(false);
     }
-    socket.emit("typing", user, room);
+    socket.emit("typing", isTyping);
   }, [currentMessage]);
+
+  useEffect(() => {
+    if (isTyping) {
+      socket.emit("typing_user", room, user);
+    }
+  }, [isTyping]);
+
 
   //SEND MESSAGE
   const sendMessage = () => {
@@ -127,8 +134,12 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setUserJoined(data);
     });
 
-    socket.on("typingResponse", (data) => {
+    socket.on("typing_status", (data) => {
       setIsTyping(data);
+    });
+
+    socket.on("receive_typing_user", (data) => {
+      console.log(data)
     });
 
     socket.on("sendMessage", (data) => {

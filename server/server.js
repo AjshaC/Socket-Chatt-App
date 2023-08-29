@@ -55,9 +55,15 @@ io.on("connection", (socket) => {
   });
 
   //TYPING
-  socket.on("typing", (data, room) => {
-    socket.to(room).emit("typingResponse", data);
+  socket.on("typing", (typing) => {
+    socket.emit("typing_status", typing);
+    console.log(typing)
   });
+
+  // socket.on("typing_user", (room) => {
+  //     socket.to(room).emit("receive_typing_user", user);
+  //     console.log(`${user} is typing in ${room}`);
+  // });
 
   //SEND MESSAGE
   socket.on("send_message", (message) => {
