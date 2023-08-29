@@ -92,12 +92,14 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [room]);
 
   useEffect(() => {
-    if (currentMessage.length === 0) {
-      setIsTyping(false);
-    } else {
+    if (currentMessage.length >= 1) {
       setIsTyping(true);
+      socket.emit("typing", true);
+    } else {
+      setIsTyping(false);
+      socket.emit("typing", false); 
     }
-    socket.emit("typing", user, room);
+    
   }, [currentMessage]);
 
   //SEND MESSAGE
