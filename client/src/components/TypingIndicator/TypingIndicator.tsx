@@ -10,7 +10,7 @@ export default function TypingIndicator() {
         <div className="TypingIndicator">
 
           <div className="whoIsTyping">
-            <p className="name">{isTyping}</p>
+            <p className="name"></p>
           </div>
 
           <div className="DottingBox">

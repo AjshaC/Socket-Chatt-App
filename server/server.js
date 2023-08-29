@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
 
   //TYPING
   socket.on("typing", (typing) => {
-    socket.emit("typing_status", typing);
+    socket.broadcast.emit("typing_status", typing);
     console.log(typing)
   });
 
