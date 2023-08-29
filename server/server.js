@@ -13,7 +13,8 @@ const io = new Server(server, {
   },
 });
 
-let usersNameInRoom = []
+//Final array of users in each room that we send to client side:
+let newUser = [];
 
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
@@ -23,7 +24,7 @@ io.on("connection", (socket) => {
   const user = socket.handshake.auth.user;
   console.log("Logged in with Username: ", user);
 
-  //ROOM
+  //JOIN ROOM
   socket.on("join_room", (newRoom) => {
     socket.join(newRoom);
     socket.to(newRoom).emit("userJoined", user);
@@ -31,27 +32,26 @@ io.on("connection", (socket) => {
       `User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`
     );
 
-    const newUser = {
+    //NEW USER CONTAINS ID AND USERNAME
+    const newUserInfo = {
       id: socket.id,
       username: user,
-    }
+    };
+    newUser.push(newUserInfo);
 
-    usersNameInRoom.push(newUser);
+    const { availableRooms, usersInRoom } = handleRooms();
 
-    const { availableRooms, usersIdInRoom } = handleRooms();
-
-    io.emit('users', users);
     io.emit("room_array", availableRooms);
-    io.emit("users_in_room", usersIdInRoom);
+    io.emit("users_in_room", usersInRoom);
   });
 
+  //LEAVE ROOM
   socket.on("leave_room", (room) => {
     socket.leave(room);
     console.log(`User ${user} disconnect from room: ${room}`);
-    const { availableRooms, usersIdInRoom } = handleRooms();
-
+    const { availableRooms, usersInRoom } = handleRooms();
     io.emit("room_array", availableRooms);
-    io.emit("users_in_room", usersIdInRoom);
+    io.emit("users_in_room", usersInRoom);
   });
 
   //TYPING
@@ -69,49 +69,54 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User Disconnected: ", socket.id);
     const { availableRooms, usersInRoom } = handleRooms();
-
-    //UPDATE USERS WHEN SOMEONE LEAVES THE CHAT!! PUT THE CODE HERE!!!!
-
     io.emit("users_in_room", usersInRoom);
     io.emit("room_array", availableRooms);
   });
 });
 
-//ÄVEN LOGIK FÖR USER HÄR OM VI HINNER MED VG-DELEN
-
+//FUNCTION THAT HANDLES ROOMLIST AND USERLIST
 function handleRooms() {
   let availableRooms = [];
-  let usersIdInRoom = [];
+  let usersInRoom = [];
 
+  //OBTAIN ARRAY OF ROOMS
   const rooms = io.sockets.adapter.rooms;
   console.log("INBYGGDA LISTAN: ", io.sockets.adapter.rooms);
-  //Loop over the Map items where key and value are not the same
+
+  //Loop over the Map items where key and value are not the same (to remove id from roomlist)
   for (const [key, value] of rooms) {
     if (
       key !== value &&
       !(value.size === 1 && value.has(key)) &&
       !availableRooms.includes(key)
     ) {
-      availableRooms.push(key);
+      availableRooms.push(key); //ADD ROOM TO ROOMLIST
 
+      //CREATE ARRAY OF USERS IDs FROM SOCKET ADAPTER
       const usersIdArray = Array.from(value);
-      usersIdInRoom.push({
-        roomName: key,
-        usersById: usersIdArray,
+
+      // CONVERT IDS TO USERNAMES
+      const usernamesArray = usersIdArray.map((userId) => {
+        const foundUser = newUser.find((user) => user.id === userId);
+        return foundUser ? foundUser.username : userId;
       });
 
-      console.log("LOG -- USERS IN ROOM: ", usersIdInRoom);
+      //ADD ID ARRAY TO USERS IN ROOM
+      usersInRoom.push({
+        roomName: key,
+        usernames: usernamesArray,
+      });
+
+      console.log("LOG -- USERS IN ROOM: ", usersInRoom);
     }
   }
 
-  console.log("UPDATED ROOMLIST: ", availableRooms);
-
-  //Check if Lobby are in the roomlist
+  //CHECK IF LOBBY IS IN ROOMLIST, OTHERWISE ADD IT
   if (!availableRooms.includes("Lobby")) {
     availableRooms.push("Lobby");
   }
 
-  return { availableRooms, usersIdInRoom };
+  return { availableRooms, usersInRoom };
 }
 
 server.listen(3000, () => console.log("server is up"));
