@@ -17,13 +17,14 @@ export default function SideBar() {
   const { socket, user, room, setRoom } = useChatContext();
   const [roomArray, setRoomArray] = useState([]);
   const [usersInRoom, setUsersInRoom] = useState<RoomData[]>([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     socket.emit("get_room_array"); // Request roomArray from server
 
     socket.on("room_array", (data) => {
       setRoomArray(data); // Update the state with roomArray from the server
-    });
+    },);
 
     // socket.on("users_in_room", (data) => {
     //   console.log(data); // Update the state with roomArray from the server
@@ -42,7 +43,14 @@ export default function SideBar() {
       setUsersInRoom(usersWithUsernames);
       console.log(usersWithUsernames);
     });
+
+    socket.on("users", (data) => {
+      setUsers(data);
+      console.log("USERLIST", data)
+  });
   }, []);
+
+ 
 
   const joinRoom = (newRoom: string) => {
     if (room) {
@@ -118,7 +126,7 @@ export default function SideBar() {
             <p className="UserHeader">
               <TeamOutlined /> Users in the room
             </p>
-            <ul>
+            {/* <ul>
               {(
                 usersInRoom.find((data) => data.roomName === room)?.usernames ||
                 []
@@ -127,7 +135,9 @@ export default function SideBar() {
                   {username}
                 </li>
               ))}
-            </ul>
+            </ul> */}
+
+    
           </div>
         ))}
       </div>

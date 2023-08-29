@@ -13,6 +13,8 @@ const io = new Server(server, {
   },
 });
 
+let usersNameInRoom = []
+
 io.on("connection", (socket) => {
   //CONNECT TO SERVER
   console.log("New user connected: ", socket.id);
@@ -20,9 +22,6 @@ io.on("connection", (socket) => {
   //SAVE USERNAME
   const user = socket.handshake.auth.user;
   console.log("Logged in with Username: ", user);
-
-  //ROOMLIST
-  const rooms = io.sockets.adapter.rooms;
 
   //ROOM
   socket.on("join_room", (newRoom) => {
@@ -32,19 +31,27 @@ io.on("connection", (socket) => {
       `User with ID: ${socket.id} and username ${user}, joined room: ${newRoom}`
     );
 
-    const { availableRooms, usersInRoom } = handleRooms();
+    const newUser = {
+      id: socket.id,
+      username: user,
+    }
 
+    usersNameInRoom.push(newUser);
+
+    const { availableRooms, usersIdInRoom } = handleRooms();
+
+    io.emit('users', users);
     io.emit("room_array", availableRooms);
-    io.emit("users_in_room", usersInRoom);
+    io.emit("users_in_room", usersIdInRoom);
   });
 
   socket.on("leave_room", (room) => {
     socket.leave(room);
     console.log(`User ${user} disconnect from room: ${room}`);
-    const { availableRooms, usersInRoom } = handleRooms();
+    const { availableRooms, usersIdInRoom } = handleRooms();
 
     io.emit("room_array", availableRooms);
-    io.emit("users_in_room", usersInRoom);
+    io.emit("users_in_room", usersIdInRoom);
   });
 
   //TYPING
@@ -63,6 +70,8 @@ io.on("connection", (socket) => {
     console.log("User Disconnected: ", socket.id);
     const { availableRooms, usersInRoom } = handleRooms();
 
+    //UPDATE USERS WHEN SOMEONE LEAVES THE CHAT!! PUT THE CODE HERE!!!!
+
     io.emit("users_in_room", usersInRoom);
     io.emit("room_array", availableRooms);
   });
@@ -72,7 +81,7 @@ io.on("connection", (socket) => {
 
 function handleRooms() {
   let availableRooms = [];
-  let usersInRoom = [];
+  let usersIdInRoom = [];
 
   const rooms = io.sockets.adapter.rooms;
   console.log("INBYGGDA LISTAN: ", io.sockets.adapter.rooms);
@@ -85,20 +94,16 @@ function handleRooms() {
     ) {
       availableRooms.push(key);
 
-      const userList = Array.from(value);
-      usersInRoom.push({
+      const usersIdArray = Array.from(value);
+      usersIdInRoom.push({
         roomName: key,
-        users: userList,
+        usersById: usersIdArray,
       });
 
-      const clients = io.sockets.adapter.rooms.get(key);
-
-      //to get the number of clients in this room
-      const numClients = clients ? clients.size : 0;
-      console.log("CLIENTS: ", clients);
-      console.log("NUMBER CLIENTS: ", numClients);
+      console.log("LOG -- USERS IN ROOM: ", usersIdInRoom);
     }
   }
+
   console.log("UPDATED ROOMLIST: ", availableRooms);
 
   //Check if Lobby are in the roomlist
@@ -106,7 +111,7 @@ function handleRooms() {
     availableRooms.push("Lobby");
   }
 
-  return { availableRooms, usersInRoom };
+  return { availableRooms, usersIdInRoom };
 }
 
 server.listen(3000, () => console.log("server is up"));
