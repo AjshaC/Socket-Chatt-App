@@ -92,8 +92,10 @@ När konto finns loggar du in
 
 - Skapa en .env fil i client-mappen.
 - Kontrollera att .env filen finns med i gitIgnore filen.
-- Skapa variabeln //////////// och klistra in din API-nyckel här, så att den sparas i variabeln.
-_ Spara och det ska nu gå att skicka en slumpmässig gif i denna applikation.
+- I .env skriver du VITE_API_KEY = och klistrar sedan in din API-nyckel efter = 
+- Spara och det ska nu gå att skicka en slumpmässig gif i denna applikation.
+
+
 
 
 
