@@ -75,6 +75,13 @@ li {
 
 .UserHeader {
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: bold;
   margin-top: 1rem;
+}
+
+.UserIcon {
+  color: rgb(8, 238, 8);
+  font-weight: bold;
+  font-size: 18px;
 }

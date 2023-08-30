@@ -46,7 +46,7 @@ export default function SideBar() {
           <UserOutlined /> {user}
         </p>
         <p className="RoomInfo">
-          <ArrowRightOutlined /> You are in Room - {room}
+          Room <ArrowRightOutlined /> {room}
         </p>
       </div>
       <div className="RoomList">
@@ -64,8 +64,7 @@ export default function SideBar() {
             <br />
 
             <p className="UserHeader">
-              <TeamOutlined /> Online Users
-            </p>
+              <span className="UserIcon"><TeamOutlined /></span> Online</p>
 
             <ul>
               {(
