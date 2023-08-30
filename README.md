@@ -36,7 +36,7 @@ För att få igång detta projekt gör du följande:
         cd server
 
 - Kör kommandot:
-        npm install
+          npm install
 
 - Starta sedan servern genom något av följande kommandon:
   
@@ -58,7 +58,7 @@ För att få igång detta projekt gör du följande:
         cd client
 
 - Kör kommandot:
-        npm install
+          npm install
 
 - När installationen är klar, kör kommandot:
         npm run dev
