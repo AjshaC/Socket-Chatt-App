@@ -38,6 +38,7 @@ För att få igång detta projekt gör du följande:
         npm install
 
 - Starta sedan servern genom något av följande kommandon:
+- 
         npm start för att dra igång servern mot node server.js
 
                 eller: 
