@@ -28,16 +28,17 @@ export default function JoinChatContainer() {
       <Card
         title="Please, choose a name to join a chat"
         className="JoinChatContainer"
-        bordered={false}
+        bordered={true}
         style={{
           maxWidth: 500,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          border: "1px solid #0c1f51"
         }}
       >
-        
+
         <Space.Compact className="InputAndButton" style={{ width: "100%" }}>
           <Input
             className="usernameInput"
