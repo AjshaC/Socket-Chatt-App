@@ -56,14 +56,11 @@ io.on("connection", (socket) => {
 
   //TYPING
   socket.on("typing", (typing) => {
-    socket.broadcast.emit("typing_status", typing);
-    console.log(typing)
-  });
+    socket.to(typing.room).emit("typing_status", typing);
+    socket.to(typing.room).emit("typing_user", typing);
 
-  // socket.on("typing_user", (room) => {
-  //     socket.to(room).emit("receive_typing_user", user);
-  //     console.log(`${user} is typing in ${room}`);
-  // });
+    console.log("TYPINGDATA: ", typing)
+  });
 
   //SEND MESSAGE
   socket.on("send_message", (message) => {
@@ -87,7 +84,7 @@ function handleRooms() {
 
   //OBTAIN ARRAY OF ROOMS
   const rooms = io.sockets.adapter.rooms;
-  console.log("INBYGGDA LISTAN: ", io.sockets.adapter.rooms);
+  console.log(io.sockets.adapter.rooms);
 
   //Loop over the Map items where key and value are not the same (to remove id from roomlist)
   for (const [key, value] of rooms) {
