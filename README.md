@@ -67,3 +67,35 @@ För att få igång detta projekt gör du följande:
         npm run dev
 
 - Projektet är nu igång och du kan se applikationen i din webbläsare via http://localhost:(nummer)/
+
+**Gif (Giphy)**
+I denna appliktion finns det möjlighet att skriva /gif i meddelanderutan för att skicka en slumpmässig gif.
+Vi har använt oss av Giphy till detta för att få ut en egen API-nyckel.
+För att få tillgång till en API-nyckel behöver du antingen logga in till redan befintligt konto på Giphy eller skapa ett nytt. Det finns kostnadsfria alternativ.
+
+https://giphy.com/
+
+Om du inte har ett konto sedan tidigare:
+- Klicka på Log In längst upp till höger
+- Välj Sign up och fyll i dina uppgifter, följ sedan instruktionerna på skärmen
+
+När konto finns loggar du in
+
+- Navigera till https://developers.giphy.com/docs/api/
+- Gå till Dashboard genom att klickapå ditt användarnamn uppe till höger och välja Dashboard i menyn
+- Create an App
+- SDK-> Next
+- Namnge din App och skriv en kort beskrivning  -> Create
+- Du får din API-nyckel. Kopiera den
+
+(Har du redan en API-nyckel för gif hos Giphy så når du den genom att navigera till Dashboard.) //FRÅGA OM DET ÄR SÅ!!
+
+- Skapa en .env fil i client-mappen.
+- Kontrollera att .env filen finns med i gitIgnore filen.
+- Skapa variabeln //////////// och klistra in din API-nyckel här, så att den sparas i variabeln.
+_ Spara och det ska nu gå att skicka en slumpmässig gif i denna applikation.
+
+
+
+
+
