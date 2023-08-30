@@ -41,7 +41,7 @@ export default function SideBar() {
 
   return (
     <div className="SideBar">
-      <div className="ChatInLog">
+      <div className="ChatInfo">
         <p className="UserInfo">
           <UserOutlined /> {user}
         </p>
@@ -63,10 +63,10 @@ export default function SideBar() {
 
             <br />
 
-            <p className="UserHeader">
+            <p className="OnlineHeader">
               <span className="UserIcon"><TeamOutlined /></span> Online</p>
 
-            <ul>
+            <ul className="UserList">
               {(
                 usersInRoom.find((data) => data.roomName === room)?.usernames ||
                 []

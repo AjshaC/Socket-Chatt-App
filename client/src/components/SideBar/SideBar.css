@@ -11,12 +11,21 @@
   padding-top: 1rem;
 }
 
-ul {
-  width: 100%;
+.ChatInfo{
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  gap: 0.5em;
+  width: 80%;
+}
+
+.RoomName {
+  font-size: larger;
+  font-weight: 400;
+}
+
+.UserName {
+  font-size: larger;
 }
 
 .RoomList{
@@ -25,10 +34,6 @@ ul {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-}
-
-li {
-  list-style: none;
 }
 
 .RoomButton {
@@ -50,30 +55,7 @@ li {
   background-color: inherit !important;
 }
 
-.ChatInLog{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5em;
-  width: 80%;
-}
-
-.RoomName {
-  font-size: larger;
-  font-weight: 400;
-}
-
-.UserName {
-  font-size: larger;
-}
-
-.UserInRoom {
-  font-size: 12px;
-  font-style: italic;
-  margin: auto;
-}
-
-.UserHeader {
+.OnlineHeader {
   text-align: center;
   font-size: 15px;
   font-weight: bold;
@@ -84,4 +66,21 @@ li {
   color: rgb(8, 238, 8);
   font-weight: bold;
   font-size: 18px;
+}
+
+.UserList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+li {
+  list-style: none;
+}
+
+.UserInRoom {
+  font-size: 12px;
+  font-style: italic;
 }
