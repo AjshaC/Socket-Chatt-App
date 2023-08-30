@@ -32,10 +32,12 @@ För att få igång detta projekt gör du följande:
 
 - Öppna en Terminal
   
-- Navigera till server-mappen genom kommandot: 
+- Navigera till server-mappen genom kommandot:
+   
         cd server
 
 - Kör kommandot:
+  
           npm install
 
 - Starta sedan servern genom något av följande kommandon:
@@ -55,12 +57,15 @@ För att få igång detta projekt gör du följande:
 - Öppna en till Terminal
 
 - Navigera till client-mappen genom kommandot:
+  
         cd client
 
 - Kör kommandot:
+  
           npm install
 
 - När installationen är klar, kör kommandot:
+  
         npm run dev
 
 Projektet är nu uppe och snurrar och du kan se applikationen i din webbläsare
