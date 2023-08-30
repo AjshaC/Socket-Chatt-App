@@ -1,6 +1,6 @@
 # Socket-Chatt-App: Chat at eleven
 
-# Beskrivning: 
+# Beskrivning 
 Vi har skapat en chatt-applikation med namn Chat at eleven där användare kan chatta med varandra i realtid. 
 
 Servern är byggd med socket.io samt nodeJS / express.
@@ -27,6 +27,7 @@ För att få igång detta projekt gör du följande:
 - Öppna upp projektet i editor Visual Studio Code för att direkt härifrån nå Terminalen.
 
 
+
 **Server**
 
 - Öppna en Terminal
@@ -46,6 +47,8 @@ För att få igång detta projekt gör du följande:
         npm run dev för att köra med nodemon server.js
 
 - Servern är nu igång
+
+
 
 **Client**
 
