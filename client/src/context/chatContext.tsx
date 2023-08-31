@@ -104,13 +104,11 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     if (currentMessage.length >= 1) {
       setIsTyping(true);
       socket.emit("typing", { isTyping: true, room: room, userTyping: user });
-      
     } else {
       setIsTyping(false);
       socket.emit("typing", { isTyping: false, room: room, userTyping: "" });
     }
   }, [currentMessage]);
-
 
   //SEND MESSAGE
   const sendMessage = () => {
@@ -154,9 +152,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     socket.on("receive_message", (message) => {
       setMessageList((list) => [...list, message]);
     });
-
-    // socket.on("leave_room", (data) => {
-    // });
 
     return () => {
       socket.disconnect();
