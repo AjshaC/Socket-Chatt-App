@@ -94,6 +94,9 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     if (room) {
       socket.emit("join_room", room, user);
     }
+
+    //Reset messageList when room changes
+    setMessageList([]);
   }, [room]);
 
   //TYPING
@@ -165,11 +168,6 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setRoomList(roomArray);
     });
   }, []);
-
-  // Reset messageList when room changes
-  useEffect(() => {
-    setMessageList([]);
-  }, [room]);
 
   return (
     <ChatContext.Provider
