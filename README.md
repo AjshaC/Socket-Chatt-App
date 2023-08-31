@@ -68,4 +68,4 @@ För att få igång detta projekt gör du följande:
   
         npm run dev
 
-Projektet är nu uppe och snurrar och du kan se applikationen i din webbläsare
+Projektet är nu uppe och snurrar på localhost och du kan se applikationen i din webbläsare
