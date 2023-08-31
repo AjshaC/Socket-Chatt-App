@@ -1,0 +1,151 @@
+.ChatWindow {
+  width: 80vw;
+  height: 80vh;
+  padding: 1rem;
+  margin: auto;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.CHatWindow p {
+  margin: 0;
+}
+
+.ChatWindow .ChatHeader {
+  height: 45px;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+  background: rgb(24, 26, 43);
+  background: linear-gradient(
+    0deg,
+    rgba(24, 26, 43, 1) 0%,
+    rgba(10, 10, 19, 1) 35%
+  );
+}
+
+.ChatWindow .ChatHeader p {
+  display: block;
+  color: #fff;
+  font-weight: 700;
+  margin: 1rem;
+}
+
+.ChatWindow .ChatBody {
+  height: 65vh;
+  position: relative;
+  background: #0c1f51;
+}
+
+.UserJoined {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ChatWindow .ChatBody .MessageContainer {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.ChatWindow .ChatBody .MessageContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.ChatWindow .ChatBody .Message {
+  height: auto;
+  padding: 10px;
+  display: flex;
+}
+
+.ChatWindow .ChatBody .Message .MessageContent {
+  width: auto;
+  height: auto;
+  min-height: 40px;
+  max-width: 300px;
+  border-radius: 5px;
+  color: whitesmoke;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.MessageBox {
+  display: flex;
+  flex-direction: column;
+}
+
+#You {
+  justify-content: flex-end;
+}
+
+#You .MessageContent {
+  justify-content: flex-end;
+  background-color: cornflowerblue;
+}
+
+#You .MessageMeta {
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-left: 5px;
+}
+
+#Other {
+  justify-content: flex-start;
+}
+
+#Other .Message {
+  justify-content: flex-start;
+}
+
+#Other .MessageContent {
+  justify-content: flex-start;
+  background-color: #9880ff;
+}
+
+#Other .MessageMeta {
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-right: 5px;
+}
+
+.MessageMeta .Author {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.ChatWindow .ChatBody .Message .MessageMeta {
+  display: flex;
+  font-size: 12px;
+  color: whitesmoke;
+}
+
+.ChatFooter {
+  display: flex;
+  width: 75%;
+  position: absolute;
+  padding: 1rem;
+  bottom: 0;
+  right: 0;
+}
+
+.SendInput {
+  border-radius: 0px;
+  background: #0c2042;
+  border: 1px solid cornflowerblue;
+  color: whitesmoke;
+}
+
+.SendInput::placeholder {
+  color: whitesmoke;
+}
+
+.SendBtn {
+  border: 1px solid cornflowerblue;
+  border-radius: 0px 16px 16px 0px;
+}

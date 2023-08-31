@@ -1,0 +1,86 @@
+.SideBar {
+  background: #0a0925;
+  min-height: 100vh;
+  width: 25%;
+  color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem;
+  padding-top: 1rem;
+}
+
+.ChatInfo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  width: 80%;
+}
+
+.RoomName {
+  font-size: larger;
+  font-weight: 400;
+}
+
+.UserName {
+  font-size: larger;
+}
+
+.RoomList{
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.RoomButton {
+  border-radius: 16px;
+  background-color: #0c1f51;
+  padding: 5px 10px;
+  width: 100%;
+  color: whitesmoke;
+}
+
+.RoomButton:hover {
+  border: 1px solid #fff;
+  box-shadow: 0 0 .1rem #fff,
+            0 0 .1rem #fff,
+            0 0 1rem #bc13fe,
+            0 0 0.4rem #bc13fe,
+            0 0 1.4rem #bc13fe,
+            inset 0 0 1.3rem #bc13fe; 
+  background-color: inherit !important;
+}
+
+.OnlineHeader {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.UserIcon {
+  color: rgb(8, 238, 8);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.UserList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+li {
+  list-style: none;
+}
+
+.UserInRoom {
+  font-size: 12px;
+  font-style: italic;
+}
