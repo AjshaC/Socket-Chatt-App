@@ -1,17 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import { BrowserRouter } from 'react-router-dom'
-import { ChatProvider } from './context/chatContext.tsx'
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
+import { ChatProvider } from "./context/chatContext.tsx";
 
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
-  <ChatProvider>
-    <App />
-  </ChatProvider>
+    <ChatProvider>
+      <App />
+    </ChatProvider>
   </BrowserRouter>
-  // <React.StrictMode>
-  
-  // </React.StrictMode>,
-)
+);

@@ -28,17 +28,11 @@ export default function CreateRoomPopUp() {
       }, 5000);
     } else {
       // Leave the current room, join the new room, and reset state
-
       socket.emit("leave_room", room);
-
       socket.emit("join_room", newRoom);
-
       setRoom(newRoom);
-
       setIsModalOpen(false);
-
       setNewRoom("");
-
       setErrorInfo("");
     }
   };

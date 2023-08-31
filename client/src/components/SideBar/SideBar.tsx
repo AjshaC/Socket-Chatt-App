@@ -63,7 +63,11 @@ export default function SideBar() {
             <br />
 
             <p className="OnlineHeader">
-              <span className="UserIcon"><TeamOutlined /></span> Online</p>
+              <span className="UserIcon">
+                <TeamOutlined />
+              </span>{" "}
+              Online
+            </p>
 
             <ul className="UserList">
               {(
