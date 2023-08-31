@@ -1,7 +1,12 @@
 .JoinChatContainer {
   gap: 1rem;
   min-height: 30vh;
-  background: rgba(211, 229, 245, 0.7);
+  background: rgb(32, 54, 92, 0.7);
+  box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.3);
+}
+
+.ant-card-head-title {
+  color: whitesmoke;
 }
 
 .UserNameInput::placeholder {
@@ -15,17 +20,3 @@
 .usernameInput::placeholder {
   color: whitesmoke;
 }
-
-
-/*@media (max-width: 768px) {
-  .InputAndButton {
-    flex-direction: column;
-  }
-
-  .JoinBtn {
-    width: 100%;
-    border-radius: 16px;
-  }
-}*/
-
-

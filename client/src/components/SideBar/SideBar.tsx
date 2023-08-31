@@ -26,7 +26,6 @@ export default function SideBar() {
     });
 
     socket.on("users_in_room", (data) => {
-      console.log(data); // Update the state with roomArray from the server
       setUsersInRoom(data);
     });
   }, []);
@@ -41,12 +40,12 @@ export default function SideBar() {
 
   return (
     <div className="SideBar">
-      <div className="ChatInLog">
+      <div className="ChatInfo">
         <p className="UserInfo">
           <UserOutlined /> {user}
         </p>
         <p className="RoomInfo">
-          <ArrowRightOutlined /> You are in Room - {room}
+          Room <ArrowRightOutlined /> {room}
         </p>
       </div>
       <div className="RoomList">
@@ -63,11 +62,10 @@ export default function SideBar() {
 
             <br />
 
-            <p className="UserHeader">
-              <TeamOutlined /> Online Users
-            </p>
+            <p className="OnlineHeader">
+              <span className="UserIcon"><TeamOutlined /></span> Online</p>
 
-            <ul>
+            <ul className="UserList">
               {(
                 usersInRoom.find((data) => data.roomName === room)?.usernames ||
                 []

@@ -1,16 +1,18 @@
 import "./TypingIndicator.css";
 import { useChatContext } from "../../context/chatContext";
+import { useState } from "react";
 
 export default function TypingIndicator() {
-  const { isTyping } = useChatContext();
 
+  const { isTyping, userTyping } = useChatContext();
+        
   return (
     <div>
-      {isTyping && (
+      {isTyping && userTyping !== "" && (
         <div className="TypingIndicator">
 
           <div className="whoIsTyping">
-            <p className="name">{isTyping}</p>
+            <p className="name">{userTyping}</p>
           </div>
 
           <div className="DottingBox">
