@@ -26,7 +26,6 @@ export default function SideBar() {
     });
 
     socket.on("users_in_room", (data) => {
-      console.log(data); // Update the state with roomArray from the server
       setUsersInRoom(data);
     });
   }, []);

@@ -38,6 +38,8 @@ interface IChatContext {
   setRoomList: Dispatch<SetStateAction<Room[]>>;
   isTyping: boolean;
   setIsTyping: Dispatch<SetStateAction<boolean>>;
+  userTyping: string;
+  setUserTyping: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const socket = io("http://localhost:3000", { autoConnect: false });
@@ -60,6 +62,8 @@ const defaultValues = {
   setRoomList: () => {},
   isTyping: false,
   setIsTyping: () => {},
+  userTyping: "",
+  setUserTyping: () => {},
 };
 
 export const ChatContext = createContext<IChatContext>(defaultValues);
@@ -75,6 +79,7 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [roomList, setRoomList] = useState<Room[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [userTyping, setUserTyping] = useState("");
 
   //CONNECT TO SERVER
   const connectToTheServer = () => {
@@ -94,16 +99,18 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
     setMessageList([]);
   }, [room]);
 
+  //TYPING
   useEffect(() => {
     if (currentMessage.length >= 1) {
       setIsTyping(true);
-      socket.emit("typing", true);
+      socket.emit("typing", { isTyping: true, room: room, userTyping: user });
+      
     } else {
       setIsTyping(false);
-      socket.emit("typing", false); 
+      socket.emit("typing", { isTyping: false, room: room, userTyping: "" });
     }
-    
   }, [currentMessage]);
+
 
   //SEND MESSAGE
   const sendMessage = () => {
@@ -132,8 +139,12 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setUserJoined(data);
     });
 
-    socket.on("typingResponse", (data) => {
-      setIsTyping(data);
+    socket.on("typing_status", (typing) => {
+      setIsTyping(typing.isTyping);
+    });
+
+    socket.on("typing_user", (typing) => {
+      setUserTyping(typing.userTyping);
     });
 
     socket.on("sendMessage", (data) => {
@@ -144,9 +155,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
       setMessageList((list) => [...list, message]);
     });
 
-    socket.on("leave_room", (data) => {
-      console.log("Disconnected from room: ", data);
-    });
+    // socket.on("leave_room", (data) => {
+    // });
 
     return () => {
       socket.disconnect();
@@ -179,6 +189,8 @@ export const ChatProvider = ({ children }: PropsWithChildren<{}>) => {
         setRoomList,
         isTyping,
         setIsTyping,
+        userTyping,
+        setUserTyping,
       }}
     >
       {children}
