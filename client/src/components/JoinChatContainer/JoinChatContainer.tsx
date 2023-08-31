@@ -4,7 +4,6 @@ import { Button, Input, Card, Space } from "antd";
 import { useChatContext } from "../../context/chatContext";
 import { useState } from "react";
 
-
 export default function JoinChatContainer() {
   const { user, setUser, connectToTheServer } = useChatContext();
   const [errorInfo, setErrorInfo] = useState("");
@@ -12,17 +11,14 @@ export default function JoinChatContainer() {
   const navigate = useNavigate();
 
   const joinChatClick = () => {
-        if(user.trim() !== ""){
-            connectToTheServer()
-            navigate("/chat");
-        }
-         
-        else{
-          setErrorInfo("*Username is required")
-        }
+    if (user.trim() !== "") {
+      connectToTheServer();
+      navigate("/chat");
+    } else {
+      setErrorInfo("*Username is required");
     }
+  };
 
- 
   return (
     <>
       <Card
@@ -35,10 +31,9 @@ export default function JoinChatContainer() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          border: "1px solid #0c1f51"
+          border: "1px solid #0c1f51",
         }}
       >
-
         <Space.Compact className="InputAndButton" style={{ width: "100%" }}>
           <Input
             className="usernameInput"
@@ -59,7 +54,6 @@ export default function JoinChatContainer() {
 
         <p className="errorInfo">{errorInfo}</p>
       </Card>
-
     </>
   );
 }

@@ -1,16 +1,13 @@
 import "./TypingIndicator.css";
 import { useChatContext } from "../../context/chatContext";
-import { useState } from "react";
 
 export default function TypingIndicator() {
-
   const { isTyping, userTyping } = useChatContext();
-        
+
   return (
     <div>
       {isTyping && userTyping !== "" && (
         <div className="TypingIndicator">
-
           <div className="whoIsTyping">
             <p className="name">{userTyping}</p>
           </div>

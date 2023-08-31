@@ -58,8 +58,7 @@ io.on("connection", (socket) => {
   socket.on("typing", (typing) => {
     socket.to(typing.room).emit("typing_status", typing);
     socket.to(typing.room).emit("typing_user", typing);
-
-    console.log("TYPINGDATA: ", typing)
+    console.log("TYPINGDATA: ", typing);
   });
 
   //SEND MESSAGE
