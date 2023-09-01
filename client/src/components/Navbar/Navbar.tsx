@@ -1,13 +1,18 @@
 import "./Navbar.css";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useChatContext } from "../../context/chatContext";
 import CreateRoomPopUp from "../CreateRoomPopUp/CreateRoomPopUp";
 
 export default function Navbar() {
+  const { socket } = useChatContext();
   const navigate = useNavigate();
 
   const goToHome = () => {
-    navigate("/");
+    if (socket) {
+      socket.disconnect();
+      navigate("/");
+    }
   };
 
   return (
